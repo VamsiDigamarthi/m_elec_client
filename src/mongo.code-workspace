@@ -1,0 +1,11 @@
+{
+  "folders": [
+	{
+		"path": "../.."
+	},
+	{
+		"path": "../../../ap-new-project/server"
+	}
+],
+  "settings": {}
+}
