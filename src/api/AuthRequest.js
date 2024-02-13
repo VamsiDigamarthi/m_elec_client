@@ -11,12 +11,12 @@ headers.append("GET", "POST", "PUT", "DELETE", "OPTIONS");
 
 const API = axios.create({ baseURL: "http://localhost:5001" });
 
-// export const logIn = (FormData) =>
-//   API.post("/auth/login-verify-otp", FormData, {
-//     headers: headers,
-//   });
-
 export const logIn = (FormData) =>
-  API.post("/auth/login", FormData, {
+  API.post("/auth/login-verify-otp", FormData, {
     headers: headers,
   });
+
+// export const logIn = (FormData) =>
+//   API.post("/auth/login", FormData, {
+//     headers: headers,
+//   });
