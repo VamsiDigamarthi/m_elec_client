@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./AssignTaskAdmin.css";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import { CiFilter } from "react-icons/ci";
 import { VscSettings } from "react-icons/vsc";
 import ReactPaginate from "react-paginate";
@@ -8,8 +8,9 @@ import { APIS, headers } from "../../data/header";
 import { useSelector } from "react-redux";
 import { GoTasklist } from "react-icons/go";
 import { RxCross1 } from "react-icons/rx";
-import ClipLoader from "react-spinners/ClipLoader";
+// import ClipLoader from "react-spinners/ClipLoader";
 import { allpsAddedtoUser } from "../../util/showmessages";
+import { SpinnerDotted } from "spinners-react";
 const AssignTaskAdmin = ({ changeModeOfTask }) => {
   const UUU = useSelector((state) => state.authReducer.authData);
 
@@ -301,13 +302,19 @@ const AssignTaskAdmin = ({ changeModeOfTask }) => {
             alignItems: "center",
           }}
         >
-          <ClipLoader
+          {/* <ClipLoader
             color="red"
             loading={loading}
             // cssOverride={override}
             size={50}
             aria-label="Loading Spinner"
             data-testid="loader"
+          /> */}
+          <SpinnerDotted
+            size={50}
+            thickness={100}
+            speed={100}
+            color="#36ad47"
           />
         </div>
       ) : (

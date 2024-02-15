@@ -14,6 +14,7 @@ const DistrictPaymentDetails = () => {
       headers: headers,
     })
       .then((res) => {
+        // console.log(res.data);
         setPaymentUser(res.data);
       })
       .catch((e) => {

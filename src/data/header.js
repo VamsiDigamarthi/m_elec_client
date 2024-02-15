@@ -9,6 +9,10 @@ headers.append("Access-Control-Allow-Credentials", "true");
 
 headers.append("GET", "POST", "PUT", "DELETE", "OPTIONS");
 
+// export const APIS = axios.create({
+//   baseURL: "http://localhost:5001",
+// });
+
 export const APIS = axios.create({
-  baseURL: "http://localhost:5001",
+  baseURL: "https://m-election-ser.onrender.com/",
 });
