@@ -58,3 +58,39 @@
     width: 48%;
   }
 }
+
+.payment_input_card {
+  width: 100%;
+  /* border: 2px solid red; */
+  height: 40px;
+  display: flex;
+  /* justify-content: space-between; */
+  align-items: center;
+  border: 1px solid #ff5c41;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.payment_input_card > input {
+  width: 85%;
+  height: 100%;
+  border: none;
+  outline: none;
+  padding: 0px 10px;
+  font-size: 18px;
+}
+
+.payment_input_card > button {
+  width: 15%;
+  height: 100%;
+  border: none;
+  background-color: #ff5c41;
+  color: #fff;
+  font-size: 19px;
+}
+
+@media (max-width: 768px) {
+  .payment_input_card {
+    margin-top: 30px;
+  }
+}

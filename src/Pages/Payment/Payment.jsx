@@ -12,6 +12,8 @@ const Payment = () => {
     []
   );
 
+  const [userDataFromApi, setUserDataFromApi] = useState({});
+
   const initialPaymentData = () => {
     APIS.get(`/payment/payment-mode-admin-to-user/${UUU?._id}`, {
       headers: headers,
@@ -45,9 +47,24 @@ const Payment = () => {
       });
   };
 
+  // FETCH THERE INFORMATION FROM DATA BASE
+  const getUserDataGromApis = () => {
+    APIS.get(`/user/user-get-profile/${UUU?._id}`, {
+      headers: headers,
+    })
+      .then((res) => {
+        // console.log(res);
+        setUserDataFromApi(res.data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
   useEffect(() => {
     initialPaymentData();
     onDistrictCoordinator();
+    getUserDataGromApis();
   }, []);
 
   // console.log(initialPaymentMode);
@@ -111,7 +128,7 @@ const Payment = () => {
       });
   };
 
-  // console.log(districtCoordinatorDetails);
+  console.log(userDataFromApi);
 
   return (
     <div className="payment__method__main__card">
@@ -195,10 +212,16 @@ const Payment = () => {
                             <span>UPI No</span>
                             <span>{UUU?.phonepe}</span>
                           </div>
-                          <span>
-                            Go To Certificate Page
-                            <Link to="/certificate">Click here</Link>
-                          </span>
+                          {userDataFromApi?.download_cer ? (
+                            <span>
+                              You Are Already downloaded The Certificate
+                            </span>
+                          ) : (
+                            <span>
+                              Go To Certificate Page
+                              <Link to="/certificate">Click here</Link>
+                            </span>
+                          )}
                         </div>
                       </div>
                     )}

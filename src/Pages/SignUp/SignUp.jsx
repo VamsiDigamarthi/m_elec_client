@@ -449,7 +449,11 @@ const SignUp = () => {
                 >
                   {formErrors.voterIdImage ? formErrors.voterIdImage : "."}
                 </p>
-                <input type="file" onChange={onFrontAdhrChange} />
+                <input
+                  type="file"
+                  accept="image/png, image/jpeg"
+                  onChange={onFrontAdhrChange}
+                />
 
                 <span>Adhar Id Frontside</span>
               </div>
@@ -472,7 +476,11 @@ const SignUp = () => {
                   {formErrors.adharIdImage ? formErrors.adharIdImage : "."}
                 </p>
 
-                <input type="file" onChange={onBackAdhrChange} />
+                <input
+                  type="file"
+                  accept="image/png, image/jpeg"
+                  onChange={onBackAdhrChange}
+                />
                 <span>Adhar Id Backside</span>
               </div>
               <div className="multi__input__card ">

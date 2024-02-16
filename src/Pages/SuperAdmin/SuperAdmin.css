@@ -62,3 +62,15 @@
   cursor: pointer;
   /* background-color: grey; */
 }
+
+@media (max-width: 768px) {
+  .bulk__upload__main__card {
+    flex-direction: column;
+  }
+  .upload__input__tag {
+    width: 100%;
+  }
+  .bulk__upload__main__card > button {
+    width: 100%;
+  }
+}

@@ -3,8 +3,11 @@ import { useSelector } from "react-redux";
 import "./Certificate.css";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
+import { APIS, headers } from "../../data/header";
+import { useNavigate } from "react-router-dom";
 const Certificate = () => {
   const UUU = useSelector((state) => state.authReducer.authData);
+  const navigate = useNavigate();
   const downloadPdf = () => {
     const capture = document.querySelector(".certificate__card");
     html2canvas(capture).then((canvas) => {
@@ -17,7 +20,22 @@ const Certificate = () => {
 
       doc.save("certificate.pdf");
     });
+
+    APIS.put(
+      `/user/download-certificate/${UUU?._id}`,
+      { data: "true" },
+      {
+        headers: headers,
+      }
+    )
+      .then((res) => {
+        console.log(res.data);
+        navigate(-1);
+      })
+      .catch((e) => console.log(e));
   };
+
+  // console.log(UUU);
 
   return (
     <div className="certificate__main">

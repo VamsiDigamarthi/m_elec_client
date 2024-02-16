@@ -97,20 +97,20 @@ const TaskPage = () => {
   // WHEN USER REJECTED BUTTON CLICK THERE CORRESPONDING TASK REJECTED FROM STORE DATABASE
   const onRejectedTask = (id) => {
     console.log(id);
-    // APIS.put(
-    //   `/user/update-task/${id}`,
-    //   { action: "rejected" },
-    //   {
-    //     headers: headers,
-    //   }
-    // )
-    //   .then((res) => {
-    //     fetchAllTask();
-    //     rejectedTask();
-    //   })
-    //   .catch((e) => {
-    //     console.log(e);
-    //   });
+    APIS.put(
+      `/user/update-task/${id}`,
+      { action: "rejected" },
+      {
+        headers: headers,
+      }
+    )
+      .then((res) => {
+        fetchAllTask();
+        rejectedTask();
+      })
+      .catch((e) => {
+        console.log(e);
+      });
   };
 
   // USER SUBMITTED KIT RECEVIED IMAGE FROM  DATA BASE API CALL
@@ -375,6 +375,7 @@ const TaskPage = () => {
                             </p>
                             <input
                               type="file"
+                              accept="image/png, image/jpeg"
                               onChange={onKitReceivedImageFunc}
                             />
 
@@ -423,6 +424,7 @@ const TaskPage = () => {
 
                             <input
                               type="file"
+                              accept="image/png, image/jpeg"
                               onChange={onInstallationImageFunc}
                             />
 
@@ -457,6 +459,7 @@ const TaskPage = () => {
 
                             <input
                               type="file"
+                              accept="image/png, image/jpeg"
                               onChange={onInstallationCertificateFunc}
                             />
 
@@ -508,6 +511,7 @@ const TaskPage = () => {
 
                             <input
                               type="file"
+                              accept="image/png, image/jpeg"
                               onChange={onCompletedCertificateFunc}
                             />
                             <span>Completed Certificate</span>
@@ -538,6 +542,7 @@ const TaskPage = () => {
 
                             <input
                               type="file"
+                              accept="image/png, image/jpeg"
                               onChange={onFittingKitImgaeFunc}
                             />
                             <span>Kit Fitting Image</span>

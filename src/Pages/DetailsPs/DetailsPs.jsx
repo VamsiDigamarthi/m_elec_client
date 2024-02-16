@@ -11,11 +11,11 @@ import PaymentModal from "../../Modals/PaymentModal/PaymentModal";
 const DetailsPs = () => {
   const UUU = useSelector((state) => state.authReducer.authData);
 
-  const [districtPsDetails, setDistrictPsDetails] = useState([]);
+  // const [districtPsDetails, setDistrictPsDetails] = useState([]);
 
-  const [notAssignPsCount, setNotAssignPsCount] = useState(0);
+  // const [notAssignPsCount, setNotAssignPsCount] = useState(0);
 
-  const [assignPsCount, setAssignPsCount] = useState(0);
+  // const [assignPsCount, setAssignPsCount] = useState(0);
 
   // SCORED USERS STORE STATE
   const [scoredUser, setScoreUser] = useState([]);
@@ -231,11 +231,11 @@ const DetailsPs = () => {
                       className="each__user"
                       style={{
                         border:
-                          leftSideUserClickStoreId?.id === each.id
+                          leftSideUserClickStoreId?._id === each._id
                             ? "2px solid rgb(255, 187, 0)"
                             : "1px solid rgb(221, 214, 214)",
                         borderLeft:
-                          leftSideUserClickStoreId?.id === each.id &&
+                          leftSideUserClickStoreId?._id === each._id &&
                           "1px solid rgb(255, 187, 0)",
                       }}
                     >

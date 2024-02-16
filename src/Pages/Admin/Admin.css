@@ -309,3 +309,15 @@
   color: #fff;
   font-size: 17px;
 }
+
+@media (max-width: 768px) {
+  .ps_location_card {
+    flex-direction: row;
+    width: 100%;
+    flex-wrap: wrap;
+    /* gap: 2rem; */
+  }
+  .Ps_cards_card {
+    width: 47%;
+  }
+}

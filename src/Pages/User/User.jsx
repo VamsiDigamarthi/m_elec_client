@@ -8,7 +8,7 @@ import EditUserDetails from "../EditUserDetails/EditUserDetails";
 import { useSelector } from "react-redux";
 import { ToastContainer } from "react-toastify";
 import { APIS, headers } from "../../data/header";
-import { editUseSuccess, editUseSuccessaa } from "../../util/showmessages";
+import { editUseSuccessaa } from "../../util/showmessages";
 const User = () => {
   const UUU = useSelector((state) => state.authReducer.authData);
 
@@ -161,6 +161,7 @@ const User = () => {
               onOpenEditUserDetailsModal={onOpenEditUserDetailsModal}
               editUseSuccess={editUseSuccess}
               getUserDataGromApis={getUserDataGromApis}
+              userDataFromApi={userDataFromApi}
             />
           </div>
         </div>

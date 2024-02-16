@@ -25,6 +25,7 @@ import RejectedTask from "./Pages/RejectedTask/RejectedTask";
 import DistrictPaymentDetails from "./Pages/DistrictPaymentDetails/DistrictPaymentDetails";
 import Chart from "./Pages/Chart/Chart";
 import StateCoorAssignTask from "./Pages/StateCoorAssignTask/StateCoorAssignTask";
+import NotFound from "./Pages/NotFound/NotFound";
 function App() {
   const UUU = useSelector((state) => state.authReducer.authData);
   console.log(UUU);
@@ -262,6 +263,8 @@ function App() {
                 )
               }
             />
+
+            <Route path="*" element={<NotFound />} />
 
             {/* <Route path="/certificate" element={<Certificate />} /> */}
 

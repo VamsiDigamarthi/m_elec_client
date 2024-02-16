@@ -75,6 +75,7 @@ const SuperAdmin = () => {
             type="file"
             className="upload__input__tag"
             required
+            accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
             onChange={handleFile}
             // value={""}
           />

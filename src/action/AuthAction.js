@@ -8,8 +8,8 @@ export const LogIns = (formData, navigate) => async (dispatch) => {
     dispatch({ type: "AUTH_SUCCESS", data: data });
     navigate("/", { replace: true });
   } catch (e) {
-    console.log(e?.response?.data);
-    alert(e?.response?.data);
+    console.log(e?.response?.data?.msg);
+    alert(e?.response?.data?.msg);
     dispatch({ type: "AUTH_FAIL", data: e });
   }
 };

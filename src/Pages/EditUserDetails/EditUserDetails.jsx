@@ -6,15 +6,16 @@ const EditUserDetails = ({
   editUseSuccess,
   onOpenEditUserDetailsModal,
   getUserDataGromApis,
+  userDataFromApi,
 }) => {
   const UUU = useSelector((state) => state.authReducer.authData);
-  // console.log(UUU);
+  console.log(userDataFromApi);
 
   const [editUserDetailsState, setEditUserDetailsState] = useState({
-    username: UUU?.name,
-    phone: UUU?.phone,
-    phonepe: UUU?.phonepe,
-    address: UUU?.address,
+    username: userDataFromApi?.name,
+    phone: userDataFromApi?.phone,
+    phonepe: userDataFromApi?.phonepe,
+    address: userDataFromApi?.address,
   });
 
   const onChangeEditProfileInput = (e) => {
