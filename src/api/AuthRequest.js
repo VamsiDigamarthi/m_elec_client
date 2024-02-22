@@ -9,9 +9,9 @@ headers.append("Access-Control-Allow-Credentials", "true");
 
 headers.append("GET", "POST", "PUT", "DELETE", "OPTIONS");
 
-const API = axios.create({ baseURL: "http://localhost:5001" });
+// const API = axios.create({ baseURL: "http:s//localhost:5001" });
 
-// const API = axios.create({ baseURL: "https://m-election-ser.onrender.com/" });
+const API = axios.create({ baseURL: "https://m-election-ser.onrender.com/" });
 
 // export const logIn = (FormData) =>
 //   API.post("/auth/login-verify-otp", FormData, {
