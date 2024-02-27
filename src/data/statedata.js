@@ -2,6 +2,7 @@ export const stateWiseData = [
   {
     state: "Andra Pradesh",
     dist: [
+      { name: "Narasapuram" },
       {
         name: "Srikakulam",
       },

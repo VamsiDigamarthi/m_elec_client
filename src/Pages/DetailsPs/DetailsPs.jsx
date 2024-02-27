@@ -468,6 +468,7 @@ const DetailsPs = () => {
           onOpenPaymentSectionFun={onOpenPaymentSectionFun}
           leftSideUserClickStoreId={leftSideUserClickStoreId}
           paymentSendSuccessfully={paymentSendSuccessfully}
+          onUserClickFetchTask={onUserClickFetchTask} // user click fetch data payment your are send or not by showing payment btn or already payment send btn
         />
       )}
     </div>

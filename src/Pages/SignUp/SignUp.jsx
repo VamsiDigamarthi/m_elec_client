@@ -125,25 +125,24 @@ const SignUp = () => {
     setIsSubmit(true);
 
     if (Object.keys(formErrors).length === 0 && isSubmit) {
-      // APIS.post("/auth/new-sign", { phone: user.phone }, { headers: headers })
-      //   .then(() => {
-      //     setIsSubmit(false);
-      //     setSendOtpUiDesign(true);
-      //     seonOtp();
-      //   })
-      //   .catch((e) => {
-      //     console.log(e?.response?.data?.msg);
-      //     errorMsgApi(e?.response?.data?.msg);
-      //   });
-
-      APIS.post("/auth/register", user, { headers: headers })
-        .then((res) => {
-          console.log(res.data);
+      APIS.post("/auth/new-sign", { phone: user.phone }, { headers: headers })
+        .then(() => {
+          setIsSubmit(false);
+          setSendOtpUiDesign(true);
+          seonOtp();
         })
         .catch((e) => {
           console.log(e?.response?.data?.msg);
           errorMsgApi(e?.response?.data?.msg);
         });
+      // APIS.post("/auth/register", user, { headers: headers })
+      //   .then((res) => {
+      //     console.log(res.data);
+      //   })
+      //   .catch((e) => {
+      //     console.log(e?.response?.data?.msg);
+      //     errorMsgApi(e?.response?.data?.msg);
+      //   });
     }
   };
 

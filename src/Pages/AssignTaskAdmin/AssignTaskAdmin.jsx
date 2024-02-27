@@ -84,7 +84,7 @@ const AssignTaskAdmin = ({ changeModeOfTask }) => {
       }
     )
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         setNotAllocatedMandalsUser(res.data);
       })
       .catch((e) => {
@@ -176,7 +176,8 @@ const AssignTaskAdmin = ({ changeModeOfTask }) => {
 
   // IF ASSIGN MANDALS USER PRESENT SELECTED DROPDOWN THIS FUNCTION WILL CALL
   const onTaskUserIdFun = (e) => {
-    setAddedTaskUserId(e.target.value);
+    console.log(JSON.parse(e.target.value));
+    setAddedTaskUserId(JSON.parse(e.target.value));
   };
 
   /*
@@ -186,10 +187,10 @@ const AssignTaskAdmin = ({ changeModeOfTask }) => {
   */
   const onTaskAddedBtnFun = () => {
     if (addedTaskUserId) {
-      console.log(addedTaskUserId);
+      // console.log(addedTaskUserId);
       setAddedTaskUserIdError("");
       APIS.post(
-        `/district/add-task-user/${addedTaskUserId}`,
+        `/district/add-task-user/${addedTaskUserId?._id}/name/${addedTaskUserId?.name}/phone/${addedTaskUserId?.phone}`,
         {
           taskOpenFilterData,
         },
@@ -226,12 +227,12 @@ const AssignTaskAdmin = ({ changeModeOfTask }) => {
     const lowerMandal = unique_values.map((element) => {
       return element.toLowerCase();
     });
-    // console.log(lowerMandal);
+    console.log(lowerMandal);
     // console.log(notAllocatedMandalsUser);
     const notAssignMandalsFilter = notAllocatedMandalsUser.filter(
       (each) => !lowerMandal.includes(each.mandal.toLowerCase())
     );
-    // console.log(notAssignMandalsFilter);
+    console.log(notAssignMandalsFilter);
     setNotAllocatedMandalsUserFilterData(notAssignMandalsFilter); // stores not assignmandals user
     const notAssignMandalsUnique = [
       ...new Set(notAssignMandalsFilter.map((each) => each.mandal)),
@@ -251,12 +252,13 @@ const AssignTaskAdmin = ({ changeModeOfTask }) => {
       (each) => each.mandal.toLowerCase() === e.target.value.toLowerCase()
     );
     setNotAllocatedMandalsClickFetchUserName(unAssignMandalSingle);
-    setAddedTaskUserId(unAssignMandalSingle[0]?.id);
+    // console.log(unAssignMandalSingle[0]);
+    setAddedTaskUserId(unAssignMandalSingle[0]);
   };
 
   const onNotAllocatedMandalUserChange = (e) => {
-    // console.log(e.target.value);
-    setAddedTaskUserId(e.target.value);
+    // console.log(JSON.parse(e.target.value));
+    setAddedTaskUserId(JSON.parse(e.target.value));
   };
 
   return (
@@ -337,7 +339,7 @@ const AssignTaskAdmin = ({ changeModeOfTask }) => {
               ?.filter((each) =>
                 userInputChange === ""
                   ? each
-                  : each.Location.toLowerCase().includes(
+                  : each.Location?.toLowerCase().includes(
                       userInputChange.toLowerCase()
                     )
               )
@@ -354,7 +356,7 @@ const AssignTaskAdmin = ({ changeModeOfTask }) => {
                   <span>{each.PS_No}</span>
                   <span>{each.Mandal}</span>
                   <span>
-                    {each.PS_Name_and_Address.toLowerCase().slice(0, 80)}
+                    {each.PS_Name_and_Address?.toLowerCase().slice(0, 80)}
                   </span>
                   <button
                     disabled={each.assign === "yes" && "true"}
@@ -455,7 +457,7 @@ const AssignTaskAdmin = ({ changeModeOfTask }) => {
                       SELECT NAME OF EMPLOYEE
                     </option>
                     {notAssignUserMandalWise?.map((each, key) => (
-                      <option value={each._id} key={key}>
+                      <option value={JSON.stringify(each)} key={key}>
                         {each.name}
                       </option>
                     ))}
@@ -482,7 +484,7 @@ const AssignTaskAdmin = ({ changeModeOfTask }) => {
                       SELECT EMPLOYEE NAME
                     </option>
                     {notAllocatedMandalsClickFetchUserName?.map((each, key) => (
-                      <option key={key} value={each._id}>
+                      <option key={key} value={JSON.stringify(each)}>
                         {each.name}
                       </option>
                     ))}

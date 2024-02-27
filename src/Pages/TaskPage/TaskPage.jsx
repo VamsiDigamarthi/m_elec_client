@@ -96,10 +96,10 @@ const TaskPage = () => {
 
   // WHEN USER REJECTED BUTTON CLICK THERE CORRESPONDING TASK REJECTED FROM STORE DATABASE
   const onRejectedTask = (id) => {
-    console.log(id);
+    // console.log(id);
     APIS.put(
-      `/user/update-task/${id}`,
-      { action: "rejected" },
+      `/user/update-task/${id?._id}`,
+      { action: "rejected", taskId: id?.task_id },
       {
         headers: headers,
       }
@@ -321,7 +321,7 @@ const TaskPage = () => {
                         <button onClick={() => onAcceptedTask(each?._id)}>
                           Accept
                         </button>
-                        <button onClick={() => onRejectedTask(each?._id)}>
+                        <button onClick={() => onRejectedTask(each)}>
                           Reject
                         </button>
                       </div>

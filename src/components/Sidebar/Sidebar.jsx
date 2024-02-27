@@ -16,6 +16,7 @@ import { BiSolidUserDetail } from "react-icons/bi";
 import { GoTasklist } from "react-icons/go";
 import { FaArrowDownUpAcrossLine } from "react-icons/fa6";
 import { SiAmazonpay } from "react-icons/si";
+import { BsFiletypeExe } from "react-icons/bs";
 
 export const Sidebar = ({ children, taskAssignAdminModalOpen }) => {
   const UUU = useSelector((state) => state.authReducer.authData);
@@ -178,6 +179,23 @@ export const Sidebar = ({ children, taskAssignAdminModalOpen }) => {
                     <div className="left__side__bar__icons__card">
                       <div onClick={() => setLeftOpenState(false)}>
                         <SiAmazonpay />
+                        <span>Payment Details</span>
+                      </div>
+                    </div>
+                  </Link>
+                )}
+              </>
+            )}
+
+            {/* District Corr Exel Sheet */}
+
+            {UUU && (
+              <>
+                {UUU?.role === "2" && (
+                  <Link to="/exel/details" className="all__links">
+                    <div className="left__side__bar__icons__card">
+                      <div onClick={() => setLeftOpenState(false)}>
+                        <BsFiletypeExe />
                         <span>Payment Details</span>
                       </div>
                     </div>

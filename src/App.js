@@ -26,9 +26,10 @@ import DistrictPaymentDetails from "./Pages/DistrictPaymentDetails/DistrictPayme
 import Chart from "./Pages/Chart/Chart";
 import StateCoorAssignTask from "./Pages/StateCoorAssignTask/StateCoorAssignTask";
 import NotFound from "./Pages/NotFound/NotFound";
+import DistrictCooeExel from "./Pages/DistrictCoorExel/DistrictCooeExel";
 function App() {
   const UUU = useSelector((state) => state.authReducer.authData);
-  console.log(UUU);
+  // console.log(UUU);
   const [taskAssignAdminModalOpen, setTaskAssignAdminModalOpen] =
     useState(false);
   // console.log(UUU);
@@ -166,6 +167,21 @@ function App() {
                 UUU ? (
                   UUU?.role === "2" ? (
                     <DetailsPs />
+                  ) : (
+                    <NotAccess />
+                  )
+                ) : (
+                  <Navigate to="/register" />
+                )
+              }
+            />
+
+            <Route
+              path="/exel/details"
+              element={
+                UUU ? (
+                  UUU?.role === "2" ? (
+                    <DistrictCooeExel />
                   ) : (
                     <NotAccess />
                   )

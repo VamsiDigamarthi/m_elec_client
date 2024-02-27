@@ -93,20 +93,20 @@ const RejectedTaskAdd = ({
   // STORED USER ID TO ASSIGN TASK
   const onNotAllocatedMandalUserChange = (e) => {
     // console.log(e.target.value);
-    setAddedTaskUserId(e.target.value);
+    setAddedTaskUserId(JSON.parse(e.target.value));
   };
 
   const onTaskUserIdFun = (e) => {
-    setAddedTaskUserId(e.target.value);
+    setAddedTaskUserId(JSON.parse(e.target.value));
   };
 
   const onTaskAddedBtnFun = () => {
-    // console.log(addedTaskUserId);
+    console.log(addedTaskUserId);
     // console.log(signleRejectedTask);
     if (addedTaskUserId) {
       setAddedTaskUserIdError("");
       APIS.post(
-        `/district/add-rejected-task-user/${addedTaskUserId}`,
+        `/district/add-rejected-task-user/${addedTaskUserId?._id}/name/${addedTaskUserId?.name}/phone/${addedTaskUserId?.phone}`,
         {
           ...signleRejectedTask,
         },
@@ -165,7 +165,7 @@ const RejectedTaskAdd = ({
                   SELECT NAME
                 </option>
                 {notAssignUserMandalWise?.map((each, key) => (
-                  <option value={each._id} key={key}>
+                  <option value={JSON.stringify(each)} key={key}>
                     {each.name}
                   </option>
                 ))}
@@ -199,7 +199,7 @@ const RejectedTaskAdd = ({
                   SELECT EMPLOYEE NAME
                 </option>
                 {notAllocatedMandalsClickFetchUserName?.map((each, key) => (
-                  <option key={key} value={each._id}>
+                  <option key={key} value={JSON.stringify(each)}>
                     {each.name}
                   </option>
                 ))}

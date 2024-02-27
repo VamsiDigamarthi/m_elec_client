@@ -112,6 +112,7 @@ const Payment = () => {
   };
 
   const onConfirmPayment = () => {
+    console.log("cvbnm,./");
     APIS.put(
       `/payment/payment-mode-user-confirm/${UUU?._id}`,
       { paymentuserMode: "true" },
@@ -120,7 +121,7 @@ const Payment = () => {
       }
     )
       .then((res) => {
-        // console.log(res.data);
+        console.log(res.data);
         initialPaymentData();
       })
       .catch((e) => {
@@ -128,7 +129,7 @@ const Payment = () => {
       });
   };
 
-  console.log(userDataFromApi);
+  // console.log(userDataFromApi);
 
   return (
     <div className="payment__method__main__card">

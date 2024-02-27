@@ -20,6 +20,7 @@ const PaymentModal = ({
   onOpenPaymentSectionFun, // THIS IS FUNCTION FOR CLOSE THE MODAL
   leftSideUserClickStoreId, // THIS IS STORE USER DETAILS WHO PAYMENT EMPLOYE
   paymentSendSuccessfully, // THIS IS MESSAGE DISPLAY (tosts)
+  onUserClickFetchTask,
 }) => {
   const UUU = useSelector((state) => state.authReducer.authData);
   // console.log(leftSideUserClickStoreId);
@@ -67,6 +68,7 @@ const PaymentModal = ({
         console.log(res.data);
         paymentSendSuccessfully(res?.data);
         onOpenPaymentSectionFun();
+        onUserClickFetchTask();
       })
       .catch((e) => {
         console.log(e);
