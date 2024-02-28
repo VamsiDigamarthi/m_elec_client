@@ -289,7 +289,7 @@ const DetailsPs = () => {
                               each?.action === "rejected" && "line-through",
                           }}
                         >
-                          PS No : <span>{each.PS_No}</span>
+                          PS No : <span>{each?.PS_No}</span>
                         </span>
                         <span
                           style={{
@@ -297,7 +297,7 @@ const DetailsPs = () => {
                               each?.action === "rejected" && "line-through",
                           }}
                         >
-                          AC No : <span>{each.AC_No}</span>
+                          AC No : <span>{each?.AC_No}</span>
                         </span>
                         <span
                           style={{
@@ -305,7 +305,15 @@ const DetailsPs = () => {
                               each?.action === "rejected" && "line-through",
                           }}
                         >
-                          AC Name : <span>{each.AC_name}</span>
+                          AC Name : <span>{each?.AC_name}</span>
+                        </span>
+                        <span
+                          style={{
+                            textDecoration:
+                              each?.action === "rejected" && "line-through",
+                          }}
+                        >
+                          Mandal : <span>{each?.mandal}</span>
                         </span>
                       </div>
                       <div className="completed__cer__kit__return">
@@ -424,11 +432,11 @@ const DetailsPs = () => {
                 <div className="payment__main__card__btn__show">
                   <button
                     disabled={
-                      leftSideUserClickStoreId.pay_mode_admin === "true"
+                      leftSideUserClickStoreId?.pay_mode_admin === "true"
                     }
                     onClick={onOpenPaymentSectionFun}
                   >
-                    {leftSideUserClickStoreId.pay_mode_admin === "true"
+                    {leftSideUserClickStoreId?.pay_mode_admin === "true"
                       ? "You Are Already Pay an Amount"
                       : "Payment Section"}
                   </button>

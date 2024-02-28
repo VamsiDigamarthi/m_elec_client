@@ -60,6 +60,8 @@ const AssignTaskAdmin = ({ changeModeOfTask }) => {
     setNotAllocatedMandalsClickFetchUserName,
   ] = useState([]);
 
+  const [mandalSelectSelect, setMandalSelectSelect] = useState("");
+
   // AFTER SET UNIQUE LOCATIONS THIS ALL STATE ARE STORE PAGINATION AND LOCATION DATA
   const [itemOffset, setItemOffset] = useState(0);
   const endOffset = itemOffset + 8;
@@ -214,6 +216,45 @@ const AssignTaskAdmin = ({ changeModeOfTask }) => {
     }
   };
 
+  //
+  //
+
+  const onTaskAddedBtnFunNew = () => {
+    if (notAllocatedMandalsClickFetchUserName.length > 0) {
+      if (addedTaskUserId) {
+        // console.log(addedTaskUserId);
+        setAddedTaskUserIdError("");
+        setMandalSelectSelect("");
+        APIS.post(
+          `/district/add-task-user/${addedTaskUserId?._id}/name/${addedTaskUserId?.name}/phone/${addedTaskUserId?.phone}`,
+          {
+            taskOpenFilterData,
+          },
+          {
+            headers: headers,
+          }
+        )
+          .then((res) => {
+            allpsAddedtoUser(res?.data); // call the tost
+            setOpenTaskAssignModal(false); // modal close state
+            changeModeOfTask(); //side bar blur effect remove
+            onPsDetailsBasedOnDistrict();
+            notAssignUserButNotAssignMandals();
+            // setNotAssignUserMandalWise(res.data);
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+      } else {
+        setAddedTaskUserIdError("Please Select Any Name");
+      }
+    } else {
+      setMandalSelectSelect("Please Select Any Mandal");
+    }
+  };
+  //
+  //
+
   /*
      AFTER FETCHING ALL SCORED BEAT USERS IN SPECIFIC MANDALS CALL THIS FUNCTION
      AND FILTER THE UNIQUE MANDALS FROM PS-DETAILS `220`
@@ -253,7 +294,7 @@ const AssignTaskAdmin = ({ changeModeOfTask }) => {
     );
     setNotAllocatedMandalsClickFetchUserName(unAssignMandalSingle);
     // console.log(unAssignMandalSingle[0]);
-    setAddedTaskUserId(unAssignMandalSingle[0]);
+    // setAddedTaskUserId(unAssignMandalSingle[0]);
   };
 
   const onNotAllocatedMandalUserChange = (e) => {
@@ -469,27 +510,64 @@ const AssignTaskAdmin = ({ changeModeOfTask }) => {
               <div className="mandal__wise__nouser__main__card">
                 <h2>Not Available Employees This Mandal</h2>
                 <div className="not__allocated__mandal__wise__list__of__users__card">
-                  <select onChange={onNotAllocatedMandalChangeFun}>
-                    <option disabled hidden selected>
-                      SELECT MANDALS
-                    </option>
-                    {notAllocatedUniqueMandals?.map((each, key) => (
-                      <option value={each} key={key}>
-                        {each}
+                  <div
+                  // style={{
+                  //   display: "flex",
+                  //   flexDirection: "column",
+                  // }}
+                  >
+                    {mandalSelectSelect ? (
+                      <span>{mandalSelectSelect}</span>
+                    ) : (
+                      <span
+                        style={{
+                          color: "#fff",
+                        }}
+                      >
+                        .
+                      </span>
+                    )}
+
+                    <select onChange={onNotAllocatedMandalChangeFun}>
+                      <option disabled hidden selected>
+                        SELECT MANDALS
                       </option>
-                    ))}
-                  </select>
-                  <select onChange={onNotAllocatedMandalUserChange}>
-                    <option disabled hidden selected>
-                      SELECT EMPLOYEE NAME
-                    </option>
-                    {notAllocatedMandalsClickFetchUserName?.map((each, key) => (
-                      <option key={key} value={JSON.stringify(each)}>
-                        {each.name}
+                      {notAllocatedUniqueMandals?.map((each, key) => (
+                        <option value={each} key={key}>
+                          {each}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div>
+                    {addedTaskUserIdError ? (
+                      <span>{addedTaskUserIdError}</span>
+                    ) : (
+                      <span
+                        style={{
+                          color: "#fff",
+                        }}
+                      >
+                        .
+                      </span>
+                    )}
+
+                    <select onChange={onNotAllocatedMandalUserChange}>
+                      <option disabled hidden selected>
+                        SELECT EMPLOYEE NAME
                       </option>
-                    ))}
-                  </select>
-                  <button onClick={onTaskAddedBtnFun}>Add Task</button>
+                      {notAllocatedMandalsClickFetchUserName?.map(
+                        (each, key) => (
+                          <option key={key} value={JSON.stringify(each)}>
+                            {each.name}
+                          </option>
+                        )
+                      )}
+                    </select>
+                  </div>
+
+                  <button onClick={onTaskAddedBtnFunNew}>Add Task</button>
                 </div>
               </div>
             )}

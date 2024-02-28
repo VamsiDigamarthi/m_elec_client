@@ -74,6 +74,7 @@ const Home = () => {
   // HEADER APPLY BTN CLICK CALL THIS FUNCTION
   const onApplyBtnClickToFetchData = (data) => {
     let { selectedState, selectedDist } = data;
+    console.log(data);
     if (selectedState !== null && selectedDist !== null) {
       // FETCH THE PS DATILS AND SHOW THERE CHART
       APIS.post(
@@ -84,7 +85,7 @@ const Home = () => {
         }
       )
         .then((res) => {
-          // console.log(res.data);
+          console.log(res.data);
 
           setMainCamDataFromApp(res.data);
         })
@@ -105,8 +106,6 @@ const Home = () => {
         .catch((e) => console.log(e));
     }
   };
-
-  console.log(correspondingDistrictCoordinator);
 
   return (
     <div className="super__admin__main">

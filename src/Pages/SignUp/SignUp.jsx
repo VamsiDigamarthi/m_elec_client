@@ -32,12 +32,16 @@ const SignUp = () => {
     role: "3",
   });
 
+  // console.log(user);
+
   // switch to login form to otp form by using this state
   const [sendOtpUiDesign, setSendOtpUiDesign] = useState(false);
 
   // this two states are form validations
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
+
+  const [gg, setGg] = useState(false);
 
   // state change corresponding district names store state
   const [stateWiseDistState, setStateWiseDistState] = useState([]);
@@ -52,8 +56,12 @@ const SignUp = () => {
     const errors = {};
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
 
+    const name = /^[a-zA-Z\s]*$/;
+
     if (!values.name) {
       errors.name = "name is required!";
+    } else if (!name.test(values.name)) {
+      errors.name = "Name shold containe only charaters";
     }
     if (!values.state) {
       errors.state = "state is required!";
@@ -75,10 +83,16 @@ const SignUp = () => {
     }
     if (!values.mandal) {
       errors.mandal = "Mandal number is required!";
+    } else if (!name.test(values.mandal)) {
+      errors.mandal = "mandal shold containe only charaters";
     }
-
+    // errors.adharnumber = "adhar number number is required!";
     if (!values.adharnumber) {
       errors.adharnumber = "adhar number number is required!";
+    } else if (!/^[0-9]{1,}$/.test(values?.adharnumber)) {
+      errors.adharnumber = "adhar number must be numeric characters";
+    } else if (values.adharnumber.length !== 12) {
+      errors.adharnumber = "adhar number must be 12 digits";
     }
 
     if (!values.voterIdImage) {
@@ -110,6 +124,8 @@ const SignUp = () => {
     return errors;
   };
 
+  // console.log(formErrors);
+
   // whene user selected state that corresponding district filters
   useEffect(() => {
     if (user.state !== "") {
@@ -118,13 +134,8 @@ const SignUp = () => {
     }
   }, [user.state]);
 
-  // user validated there form and send otp api call
-  const onSubmitRegisterDataFn = (e) => {
-    e.preventDefault();
-    setFormErrors(validate(user));
-    setIsSubmit(true);
-
-    if (Object.keys(formErrors).length === 0 && isSubmit) {
+  useEffect(() => {
+    if (Object.keys(formErrors).length === 0 && gg) {
       APIS.post("/auth/new-sign", { phone: user.phone }, { headers: headers })
         .then(() => {
           setIsSubmit(false);
@@ -144,6 +155,15 @@ const SignUp = () => {
       //     errorMsgApi(e?.response?.data?.msg);
       //   });
     }
+  }, [formErrors]);
+
+  // user validated there form and send otp api call
+
+  const onSubmitRegisterDataFn = (e) => {
+    e.preventDefault();
+    setFormErrors(validate(user));
+    setIsSubmit(true);
+    setGg(true);
   };
 
   // submitted otp from signup user if otp is valid
@@ -363,7 +383,7 @@ const SignUp = () => {
             <div className="inputBox">
               <p
                 style={{
-                  visibility: "hidden",
+                  visibility: "visible",
                   color: "#f58b76",
                 }}
               >

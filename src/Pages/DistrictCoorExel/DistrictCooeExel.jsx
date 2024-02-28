@@ -64,9 +64,9 @@ const DistrictCooeExel = () => {
                 <span>Employee Name</span>
                 <span>Phone</span>
               </div>
-              <div className="table__body__card">
+              <div className="table__body__card_ex">
                 {data?.map((each, key) => (
-                  <div key={key} className="table__inner__body">
+                  <div key={key} className="table__inner__body_exel">
                     <span>{each.State}</span>
                     <span>{each.District}</span>
                     <span>{each.Location}</span>

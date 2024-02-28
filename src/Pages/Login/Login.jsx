@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import "./Login.css";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -12,21 +12,14 @@ const Login = () => {
     phone: "",
   });
 
+  const [gg, setGg] = useState(false);
+
   // THIS BOTH ARE USED TO NAVIGATION HOME PAGE
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   // AFTER SENDING OTP SWITCH TO LOGIN FORM TO OTP ENTER FORM
   const [sendOtpUiDesign, setSendOtpUiDesign] = useState(false);
-
-  // WHENE USER ENTER THERE INFORMATION THAT CORRESPONDING DATA STORE FUNCTION
-  const usernameChange = (e) => {
-    setUser({ ...user, [e.target.name]: e.target.value });
-  };
-
-  // BOTH STATES ARE FROM VALIDATION USING
-  const [formErrors, setFormErrors] = useState({});
-  const [isSubmit, setIsSubmit] = useState(false);
 
   // FORM VALIDATIONS FROM USERS DATA
   const validate = (values) => {
@@ -41,13 +34,19 @@ const Login = () => {
     }
     return errors;
   };
-  // AFTER VALIDATION COMPLETED SEND THE OTP FUNCTION
-  const onLoginDetailsFun = (e) => {
-    e.preventDefault();
-    setFormErrors(validate(user));
-    setIsSubmit(true);
-    if (Object.keys(formErrors).length === 0 && isSubmit) {
-      console.log("submited Button");
+
+  // WHENE USER ENTER THERE INFORMATION THAT CORRESPONDING DATA STORE FUNCTION
+  const usernameChange = (e) => {
+    setUser({ ...user, [e.target.name]: e.target.value });
+  };
+
+  // BOTH STATES ARE FROM VALIDATION USING
+  const [formErrors, setFormErrors] = useState({});
+  const [isSubmit, setIsSubmit] = useState(false);
+
+  useEffect(() => {
+    if (Object.keys(formErrors).length === 0 && gg) {
+      // console.log("submited Button");
       // dispatch(LogIns(user, navigate));
       APIS.post("/auth/new-login", user, { headers: headers })
         .then(() => {
@@ -60,6 +59,13 @@ const Login = () => {
           errorMsgApi(e?.response?.data?.msg);
         });
     }
+  }, [formErrors]);
+
+  // AFTER VALIDATION COMPLETED SEND THE OTP FUNCTION
+  const onLoginDetailsFun = (e) => {
+    e.preventDefault();
+    setFormErrors(validate(user));
+    setGg(true);
   };
   // USER ENTER THERE OTP IN INPUT FIELD
   const onChangeOtpFromInput = (e) => {

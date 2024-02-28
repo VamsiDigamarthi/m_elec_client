@@ -65,10 +65,10 @@ const PaymentModal = ({
       }
     )
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         paymentSendSuccessfully(res?.data);
         onOpenPaymentSectionFun();
-        onUserClickFetchTask();
+        // onUserClickFetchTask();
       })
       .catch((e) => {
         console.log(e);

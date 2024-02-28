@@ -62,7 +62,7 @@ const StateCoorAssignTask = () => {
       headers: headers,
     })
       .then((res) => {
-        // console.log(res.data);
+        console.log(res.data);
         setInitialMainPsData(res.data);
         setMainCamDataFromApp(res.data);
       })
@@ -106,7 +106,7 @@ const StateCoorAssignTask = () => {
   // SELECT STATE AND DISTRICT VALUS FROM DROP DOWN AND BTN CLICK THIS FUNCTION CALL
   // AND FETCH THE CORRESPONDING DISTRICT COORDINATOR DETAILS
   const onFilterDistrictCoor = (e) => {
-    // console.log(selectedDist, selectedState);
+    console.log(selectedDist, selectedState);
     APIS.get(
       `/state/fetch-district-coordinator/${selectedDist}/state/${selectedState}`,
 
