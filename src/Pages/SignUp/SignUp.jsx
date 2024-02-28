@@ -12,7 +12,7 @@ import {
   resizeFile,
   seonOtp,
 } from "../../util/showmessages";
-const SignUp = () => {
+const SignUp = ({ onSwitchRegistor }) => {
   // user store data state
   const [user, setUser] = useState({
     name: "",
@@ -136,7 +136,11 @@ const SignUp = () => {
 
   useEffect(() => {
     if (Object.keys(formErrors).length === 0 && gg) {
-      APIS.post("/auth/new-sign", { phone: user.phone }, { headers: headers })
+      APIS.post(
+        "/auth/new-sign",
+        { phone: user.phone, name: user.name },
+        { headers: headers }
+      )
         .then(() => {
           setIsSubmit(false);
           setSendOtpUiDesign(true);
@@ -188,6 +192,7 @@ const SignUp = () => {
           voterIdImage: "",
           adharIdImage: "",
         });
+        onSwitchRegistor({ phone: user.phone, name: user.name });
       })
       .catch((e) => {
         console.log(e?.response?.data?.msg);

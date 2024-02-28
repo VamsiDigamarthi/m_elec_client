@@ -6,10 +6,11 @@ import { LogIns } from "../../action/AuthAction";
 import { APIS, headers } from "../../data/header";
 import { ToastContainer } from "react-toastify";
 import { errorMsgApi, seonOtp } from "../../util/showmessages";
-const Login = () => {
+const Login = ({ phoneAndName }) => {
   // STORE THE USERS INFORMATION
   const [user, setUser] = useState({
-    phone: "",
+    phone: phoneAndName.phone,
+    name: phoneAndName.name,
   });
 
   const [gg, setGg] = useState(false);

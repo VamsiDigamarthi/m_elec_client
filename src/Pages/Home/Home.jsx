@@ -74,7 +74,7 @@ const Home = () => {
   // HEADER APPLY BTN CLICK CALL THIS FUNCTION
   const onApplyBtnClickToFetchData = (data) => {
     let { selectedState, selectedDist } = data;
-    console.log(data);
+    // console.log(data);
     if (selectedState !== null && selectedDist !== null) {
       // FETCH THE PS DATILS AND SHOW THERE CHART
       APIS.post(
@@ -85,7 +85,7 @@ const Home = () => {
         }
       )
         .then((res) => {
-          console.log(res.data);
+          // console.log(res.data);
 
           setMainCamDataFromApp(res.data);
         })
@@ -106,7 +106,7 @@ const Home = () => {
         .catch((e) => console.log(e));
     }
   };
-
+  console.log(UUU);
   return (
     <div className="super__admin__main">
       <span className="all__pages__over__view new__over__view">Over View</span>

@@ -5,6 +5,13 @@ import Login from "../Login/Login";
 
 const Register = () => {
   const [switchRegisterPage, setSwitchRegisterPage] = useState(0);
+  // pass login data
+
+  const [phoneAndName, setPhoneAndName] = useState(null);
+  const onSwitchRegistor = (data) => {
+    setSwitchRegisterPage(1);
+    setPhoneAndName(data);
+  };
 
   return (
     <div className="register__main__card">
@@ -33,7 +40,11 @@ const Register = () => {
             </div>
           </div>
           {/* tabs carsd */}
-          {switchRegisterPage === 0 ? <SignUp /> : <Login />}
+          {switchRegisterPage === 0 ? (
+            <SignUp onSwitchRegistor={onSwitchRegistor} />
+          ) : (
+            <Login phoneAndName={phoneAndName} />
+          )}
         </div>
         {/* image card */}
 
