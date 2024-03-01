@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Login.css";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -9,8 +9,7 @@ import { errorMsgApi, seonOtp } from "../../util/showmessages";
 const Login = ({ phoneAndName }) => {
   // STORE THE USERS INFORMATION
   const [user, setUser] = useState({
-    phone: phoneAndName.phone,
-    name: phoneAndName.name,
+    phone: phoneAndName?.phone,
   });
 
   const [gg, setGg] = useState(false);
@@ -77,6 +76,8 @@ const Login = ({ phoneAndName }) => {
   const onSubmitOtpFunc = () => {
     dispatch(LogIns(user, navigate));
   };
+
+  console.log(user);
 
   return (
     <div className="login__page__main">

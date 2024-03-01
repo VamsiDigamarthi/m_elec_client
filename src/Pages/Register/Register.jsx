@@ -7,7 +7,7 @@ const Register = () => {
   const [switchRegisterPage, setSwitchRegisterPage] = useState(0);
   // pass login data
 
-  const [phoneAndName, setPhoneAndName] = useState(null);
+  const [phoneAndName, setPhoneAndName] = useState("");
   const onSwitchRegistor = (data) => {
     setSwitchRegisterPage(1);
     setPhoneAndName(data);

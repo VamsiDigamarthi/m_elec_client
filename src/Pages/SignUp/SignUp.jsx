@@ -192,7 +192,7 @@ const SignUp = ({ onSwitchRegistor }) => {
           voterIdImage: "",
           adharIdImage: "",
         });
-        onSwitchRegistor({ phone: user.phone, name: user.name });
+        onSwitchRegistor({ phone: user.phone });
       })
       .catch((e) => {
         console.log(e?.response?.data?.msg);
