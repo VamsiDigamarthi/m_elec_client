@@ -47,7 +47,7 @@ const Login = ({ phoneAndName }) => {
   useEffect(() => {
     if (Object.keys(formErrors).length === 0 && gg) {
       // console.log("submited Button");
-      dispatch(LogIns(user, navigate));
+      // dispatch(LogIns(user, navigate));
       APIS.post("/auth/new-login", user, { headers: headers })
         .then(() => {
           setIsSubmit(false);
