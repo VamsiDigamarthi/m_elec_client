@@ -143,28 +143,28 @@ const SignUp = ({ onSwitchRegistor }) => {
 
   useEffect(() => {
     if (Object.keys(formErrors).length === 0 && gg) {
-      // APIS.post(
-      //   "/auth/new-sign",
-      //   { phone: user.phone, name: user.name },
-      //   { headers: headers }
-      // )
-      //   .then(() => {
-      //     setIsSubmit(false);
-      //     setSendOtpUiDesign(true);
-      //     seonOtp();
-      //   })
-      //   .catch((e) => {
-      //     console.log(e?.response?.data?.msg);
-      //     errorMsgApi(e?.response?.data?.msg);
-      //   });
-      APIS.post("/auth/register", user, { headers: headers })
-        .then((res) => {
-          console.log(res.data);
+      APIS.post(
+        "/auth/new-sign",
+        { phone: user.phone, name: user.name },
+        { headers: headers }
+      )
+        .then(() => {
+          setIsSubmit(false);
+          setSendOtpUiDesign(true);
+          seonOtp();
         })
         .catch((e) => {
           console.log(e?.response?.data?.msg);
           errorMsgApi(e?.response?.data?.msg);
         });
+      // APIS.post("/auth/register", user, { headers: headers })
+      //   .then((res) => {
+      //     console.log(res.data);
+      //   })
+      //   .catch((e) => {
+      //     console.log(e?.response?.data?.msg);
+      //     errorMsgApi(e?.response?.data?.msg);
+      //   });
     }
   }, [formErrors]);
 

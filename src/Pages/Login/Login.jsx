@@ -48,16 +48,16 @@ const Login = ({ phoneAndName }) => {
     if (Object.keys(formErrors).length === 0 && gg) {
       // console.log("submited Button");
       dispatch(LogIns(user, navigate));
-      // APIS.post("/auth/new-login", user, { headers: headers })
-      //   .then(() => {
-      //     setIsSubmit(false);
-      //     setSendOtpUiDesign(true);
-      //     seonOtp();
-      //   })
-      //   .catch((e) => {
-      //     console.log(e?.response?.data?.msg);
-      //     errorMsgApi(e?.response?.data?.msg);
-      //   });
+      APIS.post("/auth/new-login", user, { headers: headers })
+        .then(() => {
+          setIsSubmit(false);
+          setSendOtpUiDesign(true);
+          seonOtp();
+        })
+        .catch((e) => {
+          console.log(e?.response?.data?.msg);
+          errorMsgApi(e?.response?.data?.msg);
+        });
     }
   }, [formErrors]);
 
