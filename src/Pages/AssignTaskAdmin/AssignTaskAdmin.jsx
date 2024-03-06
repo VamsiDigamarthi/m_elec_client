@@ -86,7 +86,7 @@ const AssignTaskAdmin = ({ changeModeOfTask }) => {
       }
     )
       .then((res) => {
-        // console.log(res.data);
+        console.log(res.data);
         setNotAllocatedMandalsUser(res.data);
       })
       .catch((e) => {
@@ -189,7 +189,7 @@ const AssignTaskAdmin = ({ changeModeOfTask }) => {
   */
   const onTaskAddedBtnFun = () => {
     if (addedTaskUserId) {
-      // console.log(addedTaskUserId);
+      console.log(taskOpenFilterData);
       setAddedTaskUserIdError("");
       APIS.post(
         `/district/add-task-user/${addedTaskUserId?._id}/name/${addedTaskUserId?.name}/phone/${addedTaskUserId?.phone}`,
@@ -222,7 +222,7 @@ const AssignTaskAdmin = ({ changeModeOfTask }) => {
   const onTaskAddedBtnFunNew = () => {
     if (notAllocatedMandalsClickFetchUserName.length > 0) {
       if (addedTaskUserId) {
-        // console.log(addedTaskUserId);
+        console.log(taskOpenFilterData);
         setAddedTaskUserIdError("");
         setMandalSelectSelect("");
         APIS.post(
@@ -262,23 +262,35 @@ const AssignTaskAdmin = ({ changeModeOfTask }) => {
      AND AFTER FILTER NOT ASSIGNED MANDALS SET UNIQUE MANDALS `231`
   */
   useEffect(() => {
-    let unique_values = [
-      ...new Set(psAcDetailsBasedOnDistrictCoor.map((item) => item.Mandal)),
-    ];
-    const lowerMandal = unique_values.map((element) => {
-      return element.toLowerCase();
-    });
-    console.log(lowerMandal);
-    // console.log(notAllocatedMandalsUser);
-    const notAssignMandalsFilter = notAllocatedMandalsUser.filter(
-      (each) => !lowerMandal.includes(each.mandal.toLowerCase())
+    // let unique_values = [
+    //   ...new Set(psAcDetailsBasedOnDistrictCoor.map((item) => item.Mandal)),
+    // ];
+    // const lowerMandal = unique_values.map((element) => {
+    //   return element.toLowerCase();
+    // });
+    // console.log(lowerMandal);
+    // // console.log(notAllocatedMandalsUser);
+    // const notAssignMandalsFilter = notAllocatedMandalsUser.filter(
+    //   (each) => !lowerMandal.includes(each.mandal.toLowerCase())
+    // );
+    // console.log(notAssignMandalsFilter);
+    // setNotAllocatedMandalsUserFilterData(notAssignMandalsFilter); // stores not assignmandals user
+    // const notAssignMandalsUnique = [
+    //   ...new Set(notAssignMandalsFilter.map((each) => each.mandal)),
+    // ];
+    // setNotAllocatedUniqueMandals(notAssignMandalsUnique); // not assign mandals store as unique values
+
+    // newly added code
+
+    const filterAnotherUsers = notAllocatedMandalsUser.filter(
+      (each) => each.mandal !== notAssignUserMandalWise[0]?.mandal
     );
-    console.log(notAssignMandalsFilter);
-    setNotAllocatedMandalsUserFilterData(notAssignMandalsFilter); // stores not assignmandals user
-    const notAssignMandalsUnique = [
-      ...new Set(notAssignMandalsFilter.map((each) => each.mandal)),
+    // console.log(filterAnotherUsers);
+    setNotAllocatedMandalsUserFilterData(filterAnotherUsers);
+    const notAssignMandalsUniques = [
+      ...new Set(filterAnotherUsers.map((each) => each.mandal)),
     ];
-    setNotAllocatedUniqueMandals(notAssignMandalsUnique); // not assign mandals store as unique values
+    setNotAllocatedUniqueMandals(notAssignMandalsUniques); // not assign mandals store as unique values
   }, [notAssignUserMandalWise]);
 
   /*

@@ -3,7 +3,7 @@ import "./Header.css";
 
 const Header = ({ mainCamDataFromApp, onApplyBtnClickToFetchData }) => {
   // ALL STATE NAMES ARE STORES
-  const [state, setState] = useState([]);
+  const [state, setState] = useState("");
   // ALL DISTRICT NAMES STORES
   const [disticts, setDisticts] = useState(null);
 
@@ -15,23 +15,23 @@ const Header = ({ mainCamDataFromApp, onApplyBtnClickToFetchData }) => {
 
   // SELECTED STATE THAT CORRESPONDING DISTRICT COORDINATOR VALUE FILTER FUNCTION
   // AND STORE THE STATE VALUES
-  const selectSate = (e) => {
-    setDisticts([]);
+  // const selectSate = (e) => {
+  //   setDisticts([]);
 
-    // filter all district based on state
-    const allDistrict = mainCamDataFromApp.filter(
-      (each) => each.State === e.target.value
-    );
+  //   // filter all district based on state
+  //   const allDistrict = mainCamDataFromApp.filter(
+  //     (each) => each.State === e.target.value
+  //   );
 
-    // filter unique district
-    const uniqueDistrict = [
-      ...new Set(allDistrict.map((item) => item.District)),
-    ];
-    setSelectedState(e.target.value);
-    setSelectedDist(uniqueDistrict[0]);
+  //   // filter unique district
+  //   const uniqueDistrict = [
+  //     ...new Set(allDistrict.map((item) => item.District)),
+  //   ];
+  //   setSelectedState(e.target.value);
+  //   setSelectedDist(uniqueDistrict[0]);
 
-    setDisticts(uniqueDistrict);
-  };
+  //   setDisticts(uniqueDistrict);
+  // };
 
   // DISTRICT NAME CHANGE CORRESPONDING VALUE STORE  `selectedDist` STATE
   const selectDistName = (e) => {
@@ -39,18 +39,31 @@ const Header = ({ mainCamDataFromApp, onApplyBtnClickToFetchData }) => {
   };
 
   const onApplyBtnClick = () => {
-    onApplyBtnClickToFetchData({ selectedState, selectedDist });
+    onApplyBtnClickToFetchData({ state, selectedDist });
   };
 
   useEffect(() => {
-    const unique = [...new Set(mainCamDataFromApp?.map((item) => item.State))];
-    setState(unique);
+    setDisticts([]);
+    // const unique = [...new Set(mainCamDataFromApp?.map((item) => item.State))];
+    // console.log(mainCamDataFromApp[0]?.State);
+    setState(mainCamDataFromApp[0]?.State);
+    const uniqueDistrict = [
+      ...new Set(mainCamDataFromApp.map((item) => item.District)),
+    ];
+    // setSelectedDist(uniqueDistrict[0]);
+
+    setDisticts(uniqueDistrict);
   }, [mainCamDataFromApp]);
 
   return (
     <div className="header__main">
       <div>
-        <select onChange={selectSate}>
+        <div className="store-state-inheader">
+          <span>
+            Your State <span>{state}</span>
+          </span>
+        </div>
+        {/* <select onChange={selectSate}>
           <option disabled selected hidden>
             select state
           </option>
@@ -58,8 +71,8 @@ const Header = ({ mainCamDataFromApp, onApplyBtnClickToFetchData }) => {
           {state.map((each, key) => (
             <option key={key}>{each}</option>
           ))}
-        </select>
-        <select value={selectedDist} onChange={selectDistName}>
+        </select> */}
+        {/* <select value={selectedDist} onChange={selectDistName}>
           <option disabled selected hidden>
             select disct
           </option>
@@ -67,7 +80,7 @@ const Header = ({ mainCamDataFromApp, onApplyBtnClickToFetchData }) => {
             <option key={key}>{each}</option>
           ))}
         </select>
-        <button onClick={onApplyBtnClick}>Apply</button>
+        <button onClick={onApplyBtnClick}>Apply</button> */}
       </div>
     </div>
   );

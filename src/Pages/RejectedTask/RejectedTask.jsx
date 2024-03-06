@@ -15,13 +15,16 @@ const RejectedTask = () => {
   // STORE REJECTED TASK WHENE ACTION CLICK CORRE TASK STORE
   const [signleRejectedTask, setSignleRejectedTask] = useState(null);
 
+  // STORE THE UNIQUE LOCATIONS FROM PS-DETAILS
+  const [psDetailsUniqueLocations, setPsDetailsUniqueLocations] = useState([]);
+
   // AFTER ALL REJECTED TASK THIS ALL STATES ARE STORE PAGINATIONS
   const [itemOffset, setItemOffset] = useState(0);
   const endOffset = itemOffset + 8;
-  const currentItems = rejectedTask?.slice(itemOffset, endOffset);
-  const pageCount = Math.ceil(rejectedTask?.length / 8);
+  const currentItems = psDetailsUniqueLocations?.slice(itemOffset, endOffset);
+  const pageCount = Math.ceil(psDetailsUniqueLocations?.length / 8);
   const handlePageClick = (event) => {
-    const newOffset = (event.selected * 8) % rejectedTask?.length;
+    const newOffset = (event.selected * 8) % psDetailsUniqueLocations?.length;
     setItemOffset(newOffset);
   };
 
@@ -46,10 +49,26 @@ const RejectedTask = () => {
     rejectedTaskApiCall();
   }, []);
 
+  // AFTER FETCHING REJECTED PS FILTER UNIQUE LOCATIOSN
+
+  useEffect(() => {
+    const key = "location";
+    const arrayUniqueByKey = [
+      ...new Map(rejectedTask.map((item) => [item[key], item])).values(),
+    ];
+    // console.log(arrayUniqueByKey);
+    setPsDetailsUniqueLocations(arrayUniqueByKey);
+  }, [rejectedTask]);
+
   // REJECTED TASK ACTION CLICK SHOW MODAL
-  const onOpenRejectedTaskModalFun = (each) => {
+  const onOpenRejectedTaskModalFun = (name) => {
+    // console.log(name.location);
     setOpenRejectedTaskModal(true);
-    setSignleRejectedTask(each);
+    const allLoactionUniquePs = rejectedTask.filter(
+      (each) => each.location === name?.location
+    );
+    setSignleRejectedTask(allLoactionUniquePs);
+    // console.log(allLoactionUniquePs);
   };
   // REJECTED TASK ACTION CLICK CLOSE MODAL
   const closeRejectedTaskModalFun = () => {
@@ -156,9 +175,9 @@ const RejectedTask = () => {
       </div>
       {openRejectedTaskModal && (
         <RejectedTaskAdd
-          closeRejectedTaskModalFun={closeRejectedTaskModalFun}
-          signleRejectedTask={signleRejectedTask}
-          rejectedTaskApiCall={rejectedTaskApiCall}
+          closeRejectedTaskModalFun={closeRejectedTaskModalFun} // closed the modal function
+          signleRejectedTask={signleRejectedTask} // state store rejected task unique locations
+          rejectedTaskApiCall={rejectedTaskApiCall} // call apis to fetch initial rejected tasks
           registorSucces={registorSucces}
         />
       )}

@@ -5,7 +5,7 @@ import { RxCross1 } from "react-icons/rx";
 import { APIS, headers } from "../../data/header";
 const RejectedTaskAdd = ({
   closeRejectedTaskModalFun, // modal close function
-  signleRejectedTask, // STORE SINGLE TASK
+  signleRejectedTask, // STORE UNIQUE LOCATIONS  TASK
   rejectedTaskApiCall, // ALL REJECTED TASK FETCH API
   registorSucces, // SHOW TOST
 }) => {
@@ -24,14 +24,16 @@ const RejectedTaskAdd = ({
     setNotAllocatedMandalsClickFetchUserName,
   ] = useState([]);
 
+  const [mandalSelectSelect, setMandalSelectSelect] = useState("");
+
   const [addedTaskUserId, setAddedTaskUserId] = useState(null);
   const [addedTaskUserIdError, setAddedTaskUserIdError] = useState(null);
 
   useEffect(() => {
     const mandalWiseNotAssignUser = (userData) => {
       // console.log(userData);
-      let district = userData.district;
-      let mandal = userData.mandal;
+      let district = userData[0]?.district;
+      let mandal = userData[0]?.mandal;
       APIS.post(
         "/district/users/notassigntask/mandalwise",
         {
@@ -43,7 +45,7 @@ const RejectedTaskAdd = ({
         }
       )
         .then((res) => {
-          console.log(res.data);
+          // console.log(res.data);
           setNotAssignUserMandalWise(res.data);
         })
         .catch((e) => {
@@ -53,7 +55,7 @@ const RejectedTaskAdd = ({
     mandalWiseNotAssignUser(signleRejectedTask);
     //
     const notAssignUserButNotAssignMandals = (userData) => {
-      let district = userData.district;
+      let district = userData[0]?.district;
       APIS.get(
         `/district/users/notassigntask/butnotassign/mandal/${district}`,
         {
@@ -102,13 +104,13 @@ const RejectedTaskAdd = ({
 
   const onTaskAddedBtnFun = () => {
     console.log(addedTaskUserId);
-    // console.log(signleRejectedTask);
+    console.log(signleRejectedTask);
     if (addedTaskUserId) {
       setAddedTaskUserIdError("");
       APIS.post(
         `/district/add-rejected-task-user/${addedTaskUserId?._id}/name/${addedTaskUserId?.name}/phone/${addedTaskUserId?.phone}`,
         {
-          ...signleRejectedTask,
+          signleRejectedTask,
         },
         {
           headers: headers,
@@ -128,7 +130,41 @@ const RejectedTaskAdd = ({
     }
   };
 
-  // console.log(remainingMandalsUser);
+  // const onTaskAddedBtnFunNew = () => {
+  //   if (notAllocatedMandalsClickFetchUserName.length > 0) {
+  //     if (addedTaskUserId) {
+  //       // console.log(addedTaskUserId);
+  //       setAddedTaskUserIdError("");
+  //       setMandalSelectSelect("");
+  //       APIS.post(
+  //         `/district/add-task-user/${addedTaskUserId?._id}/name/${addedTaskUserId?.name}/phone/${addedTaskUserId?.phone}`,
+  //         {
+  //           taskOpenFilterData,
+  //         },
+  //         {
+  //           headers: headers,
+  //         }
+  //       )
+  //         .then((res) => {
+  //           allpsAddedtoUser(res?.data); // call the tost
+  //           setOpenTaskAssignModal(false); // modal close state
+  //           changeModeOfTask(); //side bar blur effect remove
+  //           onPsDetailsBasedOnDistrict();
+  //           notAssignUserButNotAssignMandals();
+  //           // setNotAssignUserMandalWise(res.data);
+  //         })
+  //         .catch((e) => {
+  //           console.log(e);
+  //         });
+  //     } else {
+  //       setAddedTaskUserIdError("Please Select Any Name");
+  //     }
+  //   } else {
+  //     setMandalSelectSelect("Please Select Any Mandal");
+  //   }
+  // };
+
+  // console.log(signleRejectedTask);
 
   return (
     <div className="rejected__task__all__main__card">
@@ -140,19 +176,28 @@ const RejectedTaskAdd = ({
         <div className="rejected_task_ps_ac_number_display_card">
           <div className="task__single__card__num">
             <span>Location</span>
-            <span>{signleRejectedTask?.location}</span>
+            <span>{signleRejectedTask[0]?.location}</span>
           </div>
           <div className="task__single__card__num">
             <span>Mandal</span>
-            <span>{signleRejectedTask?.mandal}</span>
+            <span>{signleRejectedTask[0]?.mandal}</span>
           </div>
           <div className="task__single__card__num">
-            <span>PS No</span>
-            <span>{signleRejectedTask?.PS_No}</span>
+            <span>Ps Numbers</span>
+            <select>
+              {signleRejectedTask?.map((each, key) => (
+                <option key={key}>{each.PS_No}</option>
+              ))}
+            </select>
           </div>
           <div className="task__single__card__num">
             <span>PS Address</span>
-            <span>{signleRejectedTask?.PS_name.toLowerCase()}</span>
+            {/* <span>{taskOpenFilterData[0]?.PS_Name_and_Address}</span> */}
+            <select>
+              {signleRejectedTask?.map((each, key) => (
+                <option key={key}>{each.PS_name}</option>
+              ))}
+            </select>
           </div>
         </div>
         {notAssignUserMandalWise.length > 0 ? (
@@ -183,27 +228,33 @@ const RejectedTaskAdd = ({
             >
               This mandals no employee found
             </h2>
-            <div className="not__allocated__mandal__wise__list__of__users__card">
-              <select onChange={onNotAllocatedMandalChangeFun}>
-                <option disabled hidden selected>
-                  SELECT MANDALS
-                </option>
-                {uniqueMandals?.map((each, key) => (
-                  <option value={each} key={key}>
-                    {each}
+            <div className="dd__not__allocated__mandal__wise__list__of__users__card">
+              <div>
+                <span>fghbnjmk</span>
+                <select onChange={onNotAllocatedMandalChangeFun}>
+                  <option disabled hidden selected>
+                    SELECT MANDALS
                   </option>
-                ))}
-              </select>
-              <select onChange={onNotAllocatedMandalUserChange}>
-                <option disabled hidden selected>
-                  SELECT EMPLOYEE NAME
-                </option>
-                {notAllocatedMandalsClickFetchUserName?.map((each, key) => (
-                  <option key={key} value={JSON.stringify(each)}>
-                    {each.name}
+                  {uniqueMandals?.map((each, key) => (
+                    <option value={each} key={key}>
+                      {each}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <span>fghbnjmk</span>
+                <select onChange={onNotAllocatedMandalUserChange}>
+                  <option disabled hidden selected>
+                    SELECT EMPLOYEE NAME
                   </option>
-                ))}
-              </select>
+                  {notAllocatedMandalsClickFetchUserName?.map((each, key) => (
+                    <option key={key} value={JSON.stringify(each)}>
+                      {each.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
               <button onClick={onTaskAddedBtnFun}>Add Task</button>
             </div>
           </div>

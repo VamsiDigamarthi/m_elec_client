@@ -78,6 +78,7 @@ const TaskPage = () => {
 
   // WHEN USER ACCEPTED BUTTON CLICK THERE CORRESPONDING TASK REJECTED FROM STORE DATABASE
   const onAcceptedTask = (id) => {
+    console.log(id);
     APIS.put(
       `/user/update-task/${id}`,
       { action: "accepted" },
@@ -86,6 +87,7 @@ const TaskPage = () => {
       }
     )
       .then((res) => {
+        // console.log(res.data);
         fetchAllTask();
         acceptedTask();
       })
@@ -95,11 +97,11 @@ const TaskPage = () => {
   };
 
   // WHEN USER REJECTED BUTTON CLICK THERE CORRESPONDING TASK REJECTED FROM STORE DATABASE
-  const onRejectedTask = (id) => {
-    // console.log(id);
+  const onRejectedTask = (task) => {
+    console.log(task[0]?.location);
     APIS.put(
-      `/user/update-task/${id?._id}`,
-      { action: "rejected", taskId: id?.task_id },
+      `/user/rejected/all/task/${task[0]?.user_id}`,
+      { action: "rejected", taskId: task[0]?.location },
       {
         headers: headers,
       }
@@ -299,6 +301,28 @@ const TaskPage = () => {
               overflowY: "scroll",
             }}
           >
+            <div className="new-task-accept-reject-card">
+              <div className="task__status__card">
+                {taskForUser[0]?.action === "initiated" ? (
+                  <div className="accept__rejected">
+                    {/* onClick={() => onAcceptedTask(each?._id)} */}
+                    <button
+                      onClick={() => onAcceptedTask(taskForUser[0]?.user_id)}
+                    >
+                      Accept
+                    </button>
+
+                    <button onClick={() => onRejectedTask(taskForUser)}>
+                      Reject
+                    </button>
+                  </div>
+                ) : (
+                  <div className="initial__button">
+                    <button>{taskForUser[0]?.action}</button>
+                  </div>
+                )}
+              </div>
+            </div>
             {taskForUser.map((each, key) => (
               <div key={key} className="task__details__and__upload__image">
                 <div className="task__each__card">
@@ -314,7 +338,7 @@ const TaskPage = () => {
                       Ps : <span>{each.PS_No}</span>
                     </span>
                   </div>
-                  <div className="task__status__card">
+                  {/* <div className="task__status__card">
                     <span>Status</span>
                     {each.action === "initiated" ? (
                       <div className="accept__rejected">
@@ -330,7 +354,7 @@ const TaskPage = () => {
                         <button>{each.action}</button>
                       </div>
                     )}
-                  </div>
+                  </div> */}
                 </div>
 
                 <div className="collaps__and__certificated__card">

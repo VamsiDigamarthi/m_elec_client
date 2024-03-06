@@ -72,7 +72,9 @@ const DistrictCooeExel = () => {
                     <span>{each.Location}</span>
                     <span>{each.PS_No}</span>
                     <span>{each.Mandal}</span>
-                    <span>{each.PS_Name_and_Address}</span>
+                    <span>
+                      {each.PS_Name_and_Address.slice(0, 35).toLowerCase()}
+                    </span>
                     <span>{each.eassign}</span>
                     <span>{each.name}</span>
                     <span>{each.phone}</span>

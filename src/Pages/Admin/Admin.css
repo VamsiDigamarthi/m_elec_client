@@ -291,7 +291,7 @@
 .admin__takethe__input__from__task__card {
   width: 40%;
   display: flex;
-  justify-content: flex-end;
+  /* justify-content: flex-end; */
   align-items: center;
   /* border: 2px solid red; */
 }
@@ -320,4 +320,29 @@
   .Ps_cards_card {
     width: 47%;
   }
+}
+
+/*  */
+
+/*  */
+
+.newly-distric-stac-tasks-added-card {
+  width: 60%;
+  /* border: 2px solid red; */
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.dist-rechecking-div-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.dist-rechecking-div-card > button {
+  height: 35px;
+  border: none;
+  color: #fff;
+  background-color: #ff6f00;
+  cursor: pointer;
 }

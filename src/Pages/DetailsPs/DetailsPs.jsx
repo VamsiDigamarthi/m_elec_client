@@ -428,20 +428,21 @@ const DetailsPs = () => {
           {/* payment btn */}
           {taskForUser.length > 0 && (
             <>
-              {countTotalNotRejectedTask === countPsTask && (
-                <div className="payment__main__card__btn__show">
-                  <button
-                    disabled={
-                      leftSideUserClickStoreId?.pay_mode_admin === "true"
-                    }
-                    onClick={onOpenPaymentSectionFun}
-                  >
-                    {leftSideUserClickStoreId?.pay_mode_admin === "true"
-                      ? "You Are Already Pay an Amount"
-                      : "Payment Section"}
-                  </button>
-                </div>
-              )}
+              {countTotalNotRejectedTask === countPsTask &&
+                countTotalNotRejectedTask > 0 && (
+                  <div className="payment__main__card__btn__show">
+                    <button
+                      disabled={
+                        leftSideUserClickStoreId?.pay_mode_admin === "true"
+                      }
+                      onClick={onOpenPaymentSectionFun}
+                    >
+                      {leftSideUserClickStoreId?.pay_mode_admin === "true"
+                        ? "You Are Already Pay an Amount"
+                        : "Payment Section"}
+                    </button>
+                  </div>
+                )}
             </>
           )}
         </div>

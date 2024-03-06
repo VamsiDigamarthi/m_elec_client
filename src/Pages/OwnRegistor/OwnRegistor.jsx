@@ -1,18 +1,8 @@
 import React, { useEffect, useState } from "react";
-import "./SignUp.css";
+import "./OwnRegistor.css";
 import { stateWiseData } from "../../data/statedata";
-import { ToastContainer } from "react-toastify";
-import { APIS, headers } from "../../data/header";
-import "react-toastify/dist/ReactToastify.css";
-
-import {
-  errorMsgApi,
-  pleaseChoosImages,
-  registorSucces,
-  resizeFile,
-  seonOtp,
-} from "../../util/showmessages";
-const SignUp = ({ onSwitchRegistor }) => {
+import { pleaseChoosImages, resizeFile } from "../../util/showmessages";
+const OwnRegistor = () => {
   // user store data state
   const [user, setUser] = useState({
     name: "",
@@ -29,19 +19,14 @@ const SignUp = ({ onSwitchRegistor }) => {
     phone: "",
     voterIdImage: "",
     adharIdImage: "",
-    role: "3",
+    role: "",
   });
 
-  // console.log(user);
-
-  // switch to login form to otp form by using this state
-  const [sendOtpUiDesign, setSendOtpUiDesign] = useState(false);
+  // OTP SECINTION SHOW
+  const [showOtp, setShowOtp] = useState(false);
 
   // this two states are form validations
   const [formErrors, setFormErrors] = useState({});
-  const [isSubmit, setIsSubmit] = useState(false);
-
-  const [gg, setGg] = useState(false);
 
   // state change corresponding district names store state
   const [stateWiseDistState, setStateWiseDistState] = useState([]);
@@ -50,6 +35,16 @@ const SignUp = ({ onSwitchRegistor }) => {
   const usernameChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
+
+  const [gg, setGg] = useState(false);
+
+  // whene user selected state that corresponding district filters
+  useEffect(() => {
+    if (user.state !== "") {
+      const newDist = stateWiseData.filter((each) => each.state === user.state);
+      setStateWiseDistState(newDist[0].dist);
+    }
+  }, [user.state]);
 
   // validated all users information before there submitted data
   const validate = (values) => {
@@ -121,95 +116,11 @@ const SignUp = ({ onSwitchRegistor }) => {
       errors.phonepe = "phonepe number must be 10 characters";
     }
 
+    if (!values.role) {
+      errors.role = "Please Selete Role Of Employee";
+    }
+
     return errors;
-  };
-
-  // console.log(formErrors);
-
-  // whene user selected state that corresponding district filters
-  useEffect(() => {
-    if (user.state !== "") {
-      const newDist = stateWiseData.filter((each) => each.state === user.state);
-      setStateWiseDistState(newDist[0].dist);
-    }
-  }, [user.state]);
-
-  useEffect(() => {
-    if (user.dist !== "") {
-      // const newDist = stateWiseData.filter((each) => each.dist === user.dist);
-      // setStateWiseDistState(newDist[0].dist);
-    }
-  }, [user.dist]);
-
-  useEffect(() => {
-    if (Object.keys(formErrors).length === 0 && gg) {
-      // APIS.post(
-      //   "/auth/new-sign",
-      //   { phone: user.phone, name: user.name },
-      //   { headers: headers }
-      // )
-      //   .then(() => {
-      //     setIsSubmit(false);
-      //     setSendOtpUiDesign(true);
-      //     seonOtp();
-      //   })
-      //   .catch((e) => {
-      //     console.log(e?.response?.data?.msg);
-      //     errorMsgApi(e?.response?.data?.msg);
-      //   });
-      APIS.post("/auth/register", user, { headers: headers })
-        .then((res) => {
-          console.log(res.data);
-        })
-        .catch((e) => {
-          console.log(e?.response?.data?.msg);
-          errorMsgApi(e?.response?.data?.msg);
-        });
-    }
-  }, [formErrors]);
-
-  // user validated there form and send otp api call
-
-  const onSubmitRegisterDataFn = (e) => {
-    e.preventDefault();
-    setFormErrors(validate(user));
-    setIsSubmit(true);
-    setGg(true);
-  };
-
-  // submitted otp from signup user if otp is valid
-  const onSubmitOtpFunc = () => {
-    APIS.post("/auth/verify-otp", user, { headers: headers })
-      .then(() => {
-        registorSucces();
-        setSendOtpUiDesign(false);
-        setUser({
-          name: "",
-          email: "",
-          state: "",
-          dist: "",
-          assembly: "",
-          address: "",
-          phonepe: "",
-          voteridnumber: "",
-          adharnumber: "",
-          mandal: "",
-          password: "",
-          phone: "",
-          voterIdImage: "",
-          adharIdImage: "",
-        });
-        onSwitchRegistor({ phone: user.phone });
-      })
-      .catch((e) => {
-        console.log(e?.response?.data?.msg);
-        errorMsgApi(e?.response?.data?.msg);
-      });
-  };
-
-  // user enter otp in input field
-  const onChangeOtpFromInput = (e) => {
-    setUser({ ...user, otp: e.target.value });
   };
 
   // this function takes adhar card front image
@@ -250,66 +161,56 @@ const SignUp = ({ onSwitchRegistor }) => {
     }
   };
 
-  // const onChangeDistrictCoor = (e) => {
-  //   if (e.target.checked) {
-  //     setUser({
-  //       ...user,
-  //       role: e.target.value,
-  //     });
-  //   } else {
-  //     setUser({
-  //       ...user,
-  //       role: "3",
-  //     });
-  //   }
-  // };
+  useEffect(() => {
+    if (Object.keys(formErrors).length === 0 && gg) {
+      // APIS.post(
+      //   "/auth/new-sign",
+      //   { phone: user.phone, name: user.name },
+      //   { headers: headers }
+      // )
+      //   .then(() => {
+      //     setIsSubmit(false);
+      //     setSendOtpUiDesign(true);
+      //     seonOtp();
+      //   })
+      //   .catch((e) => {
+      //     console.log(e?.response?.data?.msg);
+      //     errorMsgApi(e?.response?.data?.msg);
+      //   });
+      //  APIS.post("/auth/register", user, { headers: headers })
+      //    .then((res) => {
+      //      console.log(res.data);
+      //    })
+      //    .catch((e) => {
+      //      console.log(e?.response?.data?.msg);
+      //      errorMsgApi(e?.response?.data?.msg);
+      //    });
+    }
+  }, [formErrors]);
 
-  // console.log(user);
+  // user validated there form and send otp api call
+
+  const onSubmitRegisterDataFn = (e) => {
+    e.preventDefault();
+    setFormErrors(validate(user));
+    setGg(true);
+  };
 
   return (
-    <>
-      {sendOtpUiDesign ? (
-        <div className="send__otp__main__card">
-          <ToastContainer
-            position="bottom-right"
-            autoClose={5000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            theme="light"
-          />
+    <div className="own-registor-main-card">
+      {showOtp ? (
+        <div className="own-input-cardss">
           <h3>Enter Your OTP</h3>
-
           <input
             type="text"
             maxLength="4"
             placeholder="Please Enter 4 Digit Otp"
-            onChange={onChangeOtpFromInput}
           />
-          <div onClick={onSubmitOtpFunc} className="otp_submit_btn">
-            <button>Submit Otp</button>
-          </div>
+          <button>Submit</button>
         </div>
       ) : (
-        <div className="signup__tabs__down__ui__card">
-          <ToastContainer
-            position="bottom-right"
-            autoClose={5000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            theme="light"
-          />
-          {/* user name and email set input field */}
-          <div className="multi__input__card">
+        <>
+          <div className="own-input-card">
             <div className="inputBox">
               <p
                 style={{
@@ -347,8 +248,7 @@ const SignUp = ({ onSwitchRegistor }) => {
               <span>Email</span>
             </div>
           </div>
-          {/* state and district set selected field */}
-          <div className="multi__input__card">
+          <div className="own-input-card">
             <div className="inputBox">
               <p
                 style={{
@@ -390,28 +290,7 @@ const SignUp = ({ onSwitchRegistor }) => {
               </select>
             </div>
           </div>
-          {/* Adhar number and mandal set input field */}
-          <div className="multi__input__card">
-            {/* <div className="inputBox">
-              <p
-                style={{
-                  visibility: "visible",
-                  color: "#f58b76",
-                }}
-              >
-                {formErrors.mandal ? formErrors.mandal : "."}
-              </p>
-              <select name="mandal" onChange={usernameChange}>
-                <option disabled hidden selected>
-                  MANDALS
-                </option>
-                {stateWiseDistState?.map((each, key) => (
-                  <option value={each.name} key={key}>
-                    {each.name}
-                  </option>
-                ))}
-              </select>
-            </div> */}
+          <div className="own-input-card">
             <div className="inputBox">
               <p
                 style={{
@@ -449,8 +328,7 @@ const SignUp = ({ onSwitchRegistor }) => {
               <span>Adhar Number</span>
             </div>
           </div>
-          {/* phone number and UPI number set Input Field */}
-          <div className="multi__input__card">
+          <div className="own-input-card">
             <div className="inputBox">
               <p
                 style={{
@@ -488,8 +366,8 @@ const SignUp = ({ onSwitchRegistor }) => {
               <span>UPI Number</span>
             </div>
           </div>
-          {/* ADHAR CARD FRONT AND BACK SIDE IMAGES UPLOADED  */}
-          <div className="multi__input__card__file">
+
+          <div className="own-input-card">
             <div className="file__image__preview__card">
               <div className="file__input__box">
                 <p
@@ -543,70 +421,64 @@ const SignUp = ({ onSwitchRegistor }) => {
               </div>
             </div>
           </div>
-          {/* SET THE ADDRESS  */}
-          <div className="text__are__card">
-            <p
-              style={{
-                visibility: "visible",
-                color: "#f58b76",
-              }}
-            >
-              {formErrors.address ? formErrors.address : "."}
-            </p>
 
-            <textarea
-              cols="50"
-              placeholder="Enter Your Address"
-              rows="5"
-              required="required"
-              onChange={usernameChange}
-              name="address"
-              value={user.address}
-            ></textarea>
+          <div className="own-input-card">
+            <div className="text__are__card">
+              <p
+                style={{
+                  visibility: "visible",
+                  color: "#f58b76",
+                }}
+              >
+                {formErrors.address ? formErrors.address : "."}
+              </p>
+
+              <textarea
+                cols="200"
+                rows="7"
+                name="address"
+                placeholder="Enter Your Address"
+                required="required"
+                onChange={usernameChange}
+                value={user.address}
+              ></textarea>
+            </div>
           </div>
-          {/* USER PASSWORD FIELD */}
-          <div className="inputBox text__are__card">
-            <p
+          <div className="own-input-card">
+            <div
               style={{
-                visibility: "visible",
-                color: "#f58b76",
+                width: "100%",
               }}
+              className="inputBox"
             >
-              {formErrors.password ? formErrors.password : "."}
-            </p>
-            <input
-              onChange={usernameChange}
-              type="text"
-              required="required"
-              name="password"
-              value={user.password}
-            />
-            <span>Password</span>
+              <p
+                style={{
+                  visibility: "visible",
+                  color: "#f58b76",
+                }}
+              >
+                {formErrors.role ? formErrors.role : "."}
+              </p>
+              <select
+                onChange={usernameChange}
+                name="role"
+                className="new-seleceted"
+              >
+                <option disabled hidden selected>
+                  SELECT THE ROLE
+                </option>
+                <option value="1">State Coordinator</option>
+                <option value="2">District Coordinator</option>
+              </select>
+            </div>
           </div>
-          {/* <div className="signup__as__dist__coor">
-            <input
-              id="role"
-              value="2"
-              onChange={onChangeDistrictCoor}
-              type="checkbox"
-            />
-            <lable htmlFor="role">
-              If You are District Coordinator Please Click CheckBox
-            </lable>
-          </div> */}
-          {/* SUBMITED THERE FORM */}
-          <button
-            style={{
-              cursor: "pointer",
-            }}
-            onClick={onSubmitRegisterDataFn}
-          >
-            Submit
-          </button>
-        </div>
+          <div className="own-input-card">
+            <button onClick={onSubmitRegisterDataFn}>Registor User</button>
+          </div>
+        </>
       )}
-    </>
+    </div>
   );
 };
 
-export default SignUp;
+export default OwnRegistor;

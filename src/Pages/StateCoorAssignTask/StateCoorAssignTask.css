@@ -20,6 +20,7 @@
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
+  overflow-y: scroll;
   /* border: 2px solid red; */
 }
 .which__task__open__card {
@@ -39,7 +40,7 @@
 }
 
 .state__assigntask__filter__card > select {
-  width: 40%;
+  width: 80%;
   border: 2px solid rgb(201, 195, 195);
   height: 35px;
   border-radius: 4px;
@@ -123,6 +124,8 @@
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  align-items: flex-start;
+  /* justify-content: flex-start; */
 }
 .all__task__display__state__coo__card__h3 {
   /* border-bottom: 2px solid rgb(199, 195, 195); */
@@ -136,6 +139,11 @@
   /* flex-direction: column; */
   justify-content: space-between;
   align-items: flex-start;
+  margin-bottom: 10px;
+  /* border: 1px solid red; */
+  gap: 1rem;
+  width: 98%;
+  border-bottom: 1px solid rgb(201, 209, 218);
 }
 
 /* .display__each__task > :nth-child(1) {
@@ -163,4 +171,101 @@
   .which__task__open__card {
     flex-direction: column;
   }
+}
+
+/*  */
+
+/*  */
+
+.newly-added-static-taskss {
+  /* border: 2px solid red; */
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.newly-added-static-taskss > div {
+  display: flex;
+  /* justify-content: flex-end; */
+  align-items: center;
+  width: 100%;
+  gap: 2rem;
+}
+
+.newly-added-static-taskss > div > button {
+  width: 200px;
+  height: 35px;
+  font-size: 18px;
+  background-color: transparent;
+  border: 2px solid lightslategray;
+  cursor: pointer;
+}
+
+.newly-added-subtasks-district-coor-card {
+  /* border: 2px solid red; */
+  width: 60%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.newly-states-coor-task-distric-confirm-card {
+  display: flex;
+  flex-direction: column;
+
+  justify-content: flex-end;
+  /* align-items: center; */
+  align-items: flex-end;
+  gap: 0.5rem;
+}
+
+.newly-states-coor-task-distric-confirm-card > div {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+  gap: 2rem;
+}
+
+.newly-states-coor-task-distric-confirm-card > div > button {
+  width: 170px;
+  height: 30px;
+  font-size: 17px;
+  border: none;
+  outline: none;
+  color: #fff;
+  cursor: pointer;
+}
+.newly-states-coor-task-distric-confirm-card > div > :nth-child(1) {
+  background-color: green;
+}
+
+.newly-states-coor-task-distric-confirm-card > div > :nth-child(2) {
+  background-color: rgb(238, 117, 5);
+}
+
+.nnnn-rechecking-process-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  justify-content: flex-end;
+  align-items: flex-end;
+}
+.nnnn-rechecking-process-card > div {
+  display: flex;
+  gap: 1rem;
+}
+.nnnn-rechecking-process-card > div > button {
+  width: 170px;
+  height: 30px;
+  border: none;
+  outline: none;
+  color: #fff;
+  cursor: pointer;
+}
+.nnnn-rechecking-process-card > div > :nth-child(1) {
+  background-color: green;
+}
+.nnnn-rechecking-process-card > div > :nth-child(2) {
+  background-color: rgb(238, 117, 5);
 }

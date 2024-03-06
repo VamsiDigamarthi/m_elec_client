@@ -17,10 +17,12 @@ import { GoTasklist } from "react-icons/go";
 import { FaArrowDownUpAcrossLine } from "react-icons/fa6";
 import { SiAmazonpay } from "react-icons/si";
 import { BsFiletypeExe } from "react-icons/bs";
+import { LiaRecordVinylSolid } from "react-icons/lia";
 
 export const Sidebar = ({ children, taskAssignAdminModalOpen }) => {
   const UUU = useSelector((state) => state.authReducer.authData);
   const [leftOpenState, setLeftOpenState] = useState(false);
+  const [activeTab, setActiveTab] = useState(0);
   const location = useLocation();
   const pathValue = location.pathname;
   const onSidebarOpenWheneHamClick = () => {
@@ -48,6 +50,11 @@ export const Sidebar = ({ children, taskAssignAdminModalOpen }) => {
     // background: leftOpenState && "#fffffc",
     filter: taskAssignAdminModalOpen && "blur(10px)",
   };
+
+  const onTabLeftSideClick = (number) => {
+    setLeftOpenState(false);
+    setActiveTab(number);
+  };
   return (
     <>
       <div className="main__side__bar">
@@ -68,8 +75,14 @@ export const Sidebar = ({ children, taskAssignAdminModalOpen }) => {
                 {" "}
                 {UUU?.role === "1" && (
                   <Link to="/" className="all__links">
-                    <div className="left__side__bar__icons__card">
-                      <div onClick={() => setLeftOpenState(false)}>
+                    <div
+                      style={{
+                        background: activeTab === 0 && "#ff6f00",
+                        borderRadius: "10px",
+                      }}
+                      className="left__side__bar__icons__card"
+                    >
+                      <div onClick={() => onTabLeftSideClick(0)}>
                         <MdOutlineHomeWork /> <span>Home</span>
                       </div>
                     </div>
@@ -77,12 +90,39 @@ export const Sidebar = ({ children, taskAssignAdminModalOpen }) => {
                 )}
               </>
             )}
-            {UUU && (
+            {/* {UUU && (
               <>
                 {UUU?.role === "1" && (
                   <Link to="super-admin" className="all__links">
-                    <div className="left__side__bar__icons__card">
-                      <div onClick={() => setLeftOpenState(false)}>
+                    <div
+                      style={{
+                        background: activeTab === 1 && "#ff6f00",
+                        borderRadius: "10px",
+                      }}
+                      className="left__side__bar__icons__card"
+                    >
+                      <div onClick={() => onTabLeftSideClick(1)}>
+                        <TbDeviceIpadMinus />
+                        <span>Upload Cams</span>
+                      </div>
+                    </div>
+                  </Link>
+                )}
+              </>
+            )} */}
+
+            {UUU && (
+              <>
+                {UUU?.role === "4" && (
+                  <Link to="upload" className="all__links">
+                    <div
+                      style={{
+                        background: activeTab === 0 && "#ff6f00",
+                        borderRadius: "10px",
+                      }}
+                      className="left__side__bar__icons__card"
+                    >
+                      <div onClick={() => onTabLeftSideClick(0)}>
                         <TbDeviceIpadMinus />
                         <span>Upload Cams</span>
                       </div>
@@ -94,10 +134,58 @@ export const Sidebar = ({ children, taskAssignAdminModalOpen }) => {
 
             {UUU && (
               <>
+                {UUU?.role === "4" && (
+                  <Link to="manages" className="all__links">
+                    <div
+                      style={{
+                        background: activeTab === 1 && "#ff6f00",
+                        borderRadius: "10px",
+                      }}
+                      className="left__side__bar__icons__card"
+                    >
+                      <div onClick={() => onTabLeftSideClick(1)}>
+                        <TbDeviceIpadMinus />
+                        <span>Manages Cams</span>
+                      </div>
+                    </div>
+                  </Link>
+                )}
+              </>
+            )}
+
+            {UUU && (
+              <>
+                {UUU?.role === "4" && (
+                  <Link to="own/records" className="all__links">
+                    <div
+                      style={{
+                        background: activeTab === 2 && "#ff6f00",
+                        borderRadius: "10px",
+                      }}
+                      className="left__side__bar__icons__card"
+                    >
+                      <div onClick={() => onTabLeftSideClick(2)}>
+                        <LiaRecordVinylSolid />
+                        <span>Registor Emp</span>
+                      </div>
+                    </div>
+                  </Link>
+                )}
+              </>
+            )}
+
+            {UUU && (
+              <>
                 {UUU?.role === "1" && (
                   <Link to="state/assign/task" className="all__links">
-                    <div className="left__side__bar__icons__card">
-                      <div onClick={() => setLeftOpenState(false)}>
+                    <div
+                      style={{
+                        background: activeTab === 1 && "#ff6f00",
+                        borderRadius: "10px",
+                      }}
+                      className="left__side__bar__icons__card"
+                    >
+                      <div onClick={() => onTabLeftSideClick(1)}>
                         <TbDeviceIpadMinus />
                         <span>Assign Tasks</span>
                       </div>
@@ -111,8 +199,14 @@ export const Sidebar = ({ children, taskAssignAdminModalOpen }) => {
               <>
                 {UUU?.role === "2" && (
                   <Link to="/admin" className="all__links">
-                    <div className="left__side__bar__icons__card">
-                      <div onClick={() => setLeftOpenState(false)}>
+                    <div
+                      style={{
+                        background: activeTab === 0 && "#ff6f00",
+                        borderRadius: "10px",
+                      }}
+                      className="left__side__bar__icons__card"
+                    >
+                      <div onClick={() => onTabLeftSideClick(0)}>
                         <AiOutlineAccountBook />
                         <span>Home</span>
                       </div>
@@ -126,10 +220,16 @@ export const Sidebar = ({ children, taskAssignAdminModalOpen }) => {
               <>
                 {UUU?.role === "2" && (
                   <Link to="/detailsps" className="all__links">
-                    <div className="left__side__bar__icons__card">
-                      <div onClick={() => setLeftOpenState(false)}>
+                    <div
+                      style={{
+                        background: activeTab === 1 && "#ff6f00",
+                        borderRadius: "10px",
+                      }}
+                      className="left__side__bar__icons__card"
+                    >
+                      <div onClick={() => onTabLeftSideClick(1)}>
                         <BiSolidUserDetail />
-                        <span>Details PS</span>
+                        <span>PS Details</span>
                       </div>
                     </div>
                   </Link>
@@ -143,8 +243,14 @@ export const Sidebar = ({ children, taskAssignAdminModalOpen }) => {
               <>
                 {UUU?.role === "2" && (
                   <Link to="/assigntask" className="all__links">
-                    <div className="left__side__bar__icons__card">
-                      <div onClick={() => setLeftOpenState(false)}>
+                    <div
+                      style={{
+                        background: activeTab === 2 && "#ff6f00",
+                        borderRadius: "10px",
+                      }}
+                      className="left__side__bar__icons__card"
+                    >
+                      <div onClick={() => onTabLeftSideClick(2)}>
                         <GoTasklist />
                         <span>Assign Task</span>
                       </div>
@@ -160,8 +266,14 @@ export const Sidebar = ({ children, taskAssignAdminModalOpen }) => {
               <>
                 {UUU?.role === "2" && (
                   <Link to="/rejected" className="all__links">
-                    <div className="left__side__bar__icons__card">
-                      <div onClick={() => setLeftOpenState(false)}>
+                    <div
+                      style={{
+                        background: activeTab === 3 && "#ff6f00",
+                        borderRadius: "10px",
+                      }}
+                      className="left__side__bar__icons__card"
+                    >
+                      <div onClick={() => onTabLeftSideClick(3)}>
                         <FaArrowDownUpAcrossLine />
                         <span>Rejected Task</span>
                       </div>
@@ -176,8 +288,14 @@ export const Sidebar = ({ children, taskAssignAdminModalOpen }) => {
               <>
                 {UUU?.role === "2" && (
                   <Link to="/payment-district-coor" className="all__links">
-                    <div className="left__side__bar__icons__card">
-                      <div onClick={() => setLeftOpenState(false)}>
+                    <div
+                      style={{
+                        background: activeTab === 4 && "#ff6f00",
+                        borderRadius: "10px",
+                      }}
+                      className="left__side__bar__icons__card"
+                    >
+                      <div onClick={() => onTabLeftSideClick(4)}>
                         <SiAmazonpay />
                         <span>Payment Details</span>
                       </div>
@@ -193,10 +311,16 @@ export const Sidebar = ({ children, taskAssignAdminModalOpen }) => {
               <>
                 {UUU?.role === "2" && (
                   <Link to="/exel/details" className="all__links">
-                    <div className="left__side__bar__icons__card">
-                      <div onClick={() => setLeftOpenState(false)}>
+                    <div
+                      style={{
+                        background: activeTab === 5 && "#ff6f00",
+                        borderRadius: "10px",
+                      }}
+                      className="left__side__bar__icons__card"
+                    >
+                      <div onClick={() => onTabLeftSideClick(5)}>
                         <BsFiletypeExe />
-                        <span>Payment Details</span>
+                        <span>Exel Details</span>
                       </div>
                     </div>
                   </Link>
@@ -223,8 +347,14 @@ export const Sidebar = ({ children, taskAssignAdminModalOpen }) => {
               <>
                 {UUU?.role === "3" && (
                   <Link to="/user" className="all__links">
-                    <div className="left__side__bar__icons__card">
-                      <div onClick={() => setLeftOpenState(false)}>
+                    <div
+                      style={{
+                        background: activeTab === 0 && "#ff6f00",
+                        borderRadius: "10px",
+                      }}
+                      className="left__side__bar__icons__card"
+                    >
+                      <div onClick={() => onTabLeftSideClick(0)}>
                         <FiUsers />
                         <span>Home</span>
                       </div>
@@ -238,8 +368,14 @@ export const Sidebar = ({ children, taskAssignAdminModalOpen }) => {
               <>
                 {UUU?.role === "3" && (
                   <Link to="/learning" className="all__links">
-                    <div className="left__side__bar__icons__card">
-                      <div onClick={() => setLeftOpenState(false)}>
+                    <div
+                      style={{
+                        background: activeTab === 1 && "#ff6f00",
+                        borderRadius: "10px",
+                      }}
+                      className="left__side__bar__icons__card"
+                    >
+                      <div onClick={() => onTabLeftSideClick(1)}>
                         <TbClearAll />
                         <span>Learning</span>
                       </div>
@@ -253,8 +389,14 @@ export const Sidebar = ({ children, taskAssignAdminModalOpen }) => {
               <>
                 {UUU?.role === "3" && (
                   <Link to="/tasks" className="all__links">
-                    <div className="left__side__bar__icons__card">
-                      <div onClick={() => setLeftOpenState(false)}>
+                    <div
+                      style={{
+                        background: activeTab === 2 && "#ff6f00",
+                        borderRadius: "10px",
+                      }}
+                      className="left__side__bar__icons__card"
+                    >
+                      <div onClick={() => onTabLeftSideClick(2)}>
                         <BsListTask />
                         <span>Our Tasks</span>
                       </div>
@@ -268,8 +410,14 @@ export const Sidebar = ({ children, taskAssignAdminModalOpen }) => {
               <>
                 {UUU?.role === "3" && (
                   <Link to="/payment" className="all__links">
-                    <div className="left__side__bar__icons__card">
-                      <div onClick={() => setLeftOpenState(false)}>
+                    <div
+                      style={{
+                        background: activeTab === 3 && "#ff6f00",
+                        borderRadius: "10px",
+                      }}
+                      className="left__side__bar__icons__card"
+                    >
+                      <div onClick={() => onTabLeftSideClick(3)}>
                         <BsListTask />
                         <span>Payment Section</span>
                       </div>

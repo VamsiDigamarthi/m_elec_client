@@ -4,8 +4,10 @@ import { APIS, headers } from "../../data/header";
 import { ToastContainer } from "react-toastify";
 import {
   staticCoordinatorTaskAddedSuccess,
+  staticTaskAccepted,
   taskAddedAlredyRegis,
 } from "../../util/showmessages";
+import { useSelector } from "react-redux";
 const stateTask = [
   {
     name: "Proceedings Collections",
@@ -18,6 +20,7 @@ const stateTask = [
 ];
 
 const StateCoorAssignTask = () => {
+  const UUU = useSelector((state) => state.authReducer.authData);
   // THIS TWO STATES ARE STORED PS DETAILS
   const [initialMainPsData, setInitialMainPsData] = useState([]);
   const [mainCamDataFromApp, setMainCamDataFromApp] = useState([]);
@@ -58,11 +61,11 @@ const StateCoorAssignTask = () => {
 
   // INITIALLLY GET ALL PS DETAILS BECAUSE FILTER STATE AND DISTRICT NAMES
   const onGetAllPsDetails = () => {
-    APIS.get("/state/all-ps-details-fetch-super-admin", {
+    APIS.get(`/state/all-ps-details-fetch-super-admin/${UUU?.state}`, {
       headers: headers,
     })
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         setInitialMainPsData(res.data);
         setMainCamDataFromApp(res.data);
       })
@@ -76,32 +79,20 @@ const StateCoorAssignTask = () => {
 
   // STATE DROP DOWN CHANGE THIS FUNCTION CALL AND STORE CORRESPONDING DISTRICT VALUES
   // AND FILTER UNIQUE DISTRICT VALUES
-  const selectSate = (e) => {
-    setDisticts([]);
 
-    const allDistrict = mainCamDataFromApp.filter(
-      (each) => each.State === e.target.value
-    );
-
+  useEffect(() => {
     const uniqueDistrict = [
-      ...new Set(allDistrict.map((item) => item.District)),
+      ...new Set(mainCamDataFromApp.map((item) => item.District)),
     ];
-    setSelectedState(e.target.value);
-    setSelectedDist(uniqueDistrict[0]);
 
     setDisticts(uniqueDistrict);
-  };
+    setSelectedState(mainCamDataFromApp[0]?.State);
+  }, [mainCamDataFromApp]);
 
   // DISTRICT VALUES CHANGE STORE DISTRICT VALUES FROM `selectedDist` STATE
   const selectDistName = (e) => {
     setSelectedDist(e.target.value);
   };
-
-  // INITIALLY PAGE LOAD SET UNIQUE STATE FILTER FUNCTION
-  useEffect(() => {
-    const unique = [...new Set(mainCamDataFromApp?.map((item) => item.State))];
-    setUniqueState(unique);
-  }, [mainCamDataFromApp]);
 
   // SELECT STATE AND DISTRICT VALUS FROM DROP DOWN AND BTN CLICK THIS FUNCTION CALL
   // AND FETCH THE CORRESPONDING DISTRICT COORDINATOR DETAILS
@@ -125,23 +116,22 @@ const StateCoorAssignTask = () => {
     AFTER DISTRICT COORDINATOR DATA FETCH THAT COORESPONDING DISTRICT COORDINATOR 
     TASK FETCH FROM DATA BASE
   */
+  const fetchDistrictTask = () => {
+    const id = correspondingDistrictCoordinator?._id;
+    APIS.get(
+      `/state/distrci/task/${id}`,
+
+      {
+        headers: headers,
+      }
+    )
+      .then((res) => {
+        console.log(res.data);
+        setDistrictCoorTask(res.data);
+      })
+      .catch((e) => console.log(e));
+  };
   useEffect(() => {
-    const fetchDistrictTask = () => {
-      const id = correspondingDistrictCoordinator?._id;
-      APIS.get(
-        `/state/distrci/task/${id}`,
-
-        {
-          headers: headers,
-        }
-      )
-        .then((res) => {
-          // console.log(res.data);
-          setDistrictCoorTask(res.data);
-        })
-        .catch((e) => console.log(e));
-    };
-
     correspondingDistrictCoordinator && fetchDistrictTask();
   }, [correspondingDistrictCoordinator]);
 
@@ -201,6 +191,48 @@ const StateCoorAssignTask = () => {
     setSecondSubTask(secondTask);
   }, [districtCoorTask]);
 
+  const onStaticFirstTaskAccepted = (id) => {
+    console.log(id);
+    APIS.put(`/state/statictask/accepted/${id}`, { headers: headers })
+      .then((res) => {
+        // console.log(res.data);
+        fetchDistrictTask();
+        staticTaskAccepted(res?.data?.msg);
+      })
+      .catch((e) => console.log(e));
+  };
+
+  const onStaticFirstTaskRejected = (id) => {
+    APIS.put(`/state/statictask/rejected/${id}`, { headers: headers })
+      .then((res) => {
+        // console.log(res.data);
+        fetchDistrictTask();
+        staticTaskAccepted(res?.data?.msg);
+      })
+      .catch((e) => console.log(e));
+  };
+
+  const onReckeckingNewlyAddedFunc = (id) => {
+    // console.log("fghjkl");
+    APIS.put(`/state/rechecking/documents/${id}`, { headers: headers })
+      .then((res) => {
+        // console.log(res.data);
+        fetchDistrictTask();
+        staticTaskAccepted(res?.data?.msg);
+      })
+      .catch((e) => console.log(e));
+  };
+
+  const onRechinkAcceptedConfirm = (id) => {
+    APIS.put(`/state/second/time/accepted/${id}`, { headers: headers })
+      .then((res) => {
+        // console.log(res.data);
+        fetchDistrictTask();
+        staticTaskAccepted(res?.data?.msg);
+      })
+      .catch((e) => console.log(e));
+  };
+
   return (
     <div className="state__coor__assigntask__main">
       <h2>Assign Static Taks</h2>
@@ -219,14 +251,14 @@ const StateCoorAssignTask = () => {
       />
       <div className="state__coor__main__modal__card">
         <div className="state__assigntask__filter__card">
-          <select onChange={selectSate}>
+          {/* <select onChange={selectSate}>
             <option disabled hidden selected>
               SELECT STATE
             </option>
             {uniqueState?.map((each, key) => (
               <option key={key}>{each}</option>
             ))}
-          </select>
+          </select> */}
           <select value={selectedDist} onChange={selectDistName}>
             <option disabled hidden selected>
               SELECT DISTRICT{" "}
@@ -260,16 +292,112 @@ const StateCoorAssignTask = () => {
               </h3>
               {firstSubTask.map((each, key) => (
                 <div className="display__each__task" key={key}>
-                  <span>{each.sub_task}</span>
-                  <span
-                    className={`${
-                      each.completed !== "no"
-                        ? "task__completed"
-                        : "task__not__completed"
-                    }`}
-                  >
-                    {each.completed !== "no" ? "Completed" : "Not Completed"}
-                  </span>
+                  <h4>{each.sub_task}</h4>
+                  <div className="newly-added-subtasks-district-coor-card">
+                    {each.completed === "no" &&
+                    each.secondAccepted === "no" &&
+                    each.thirdAccepted === "no" &&
+                    each.fouthAccepted === "no" ? (
+                      <div>
+                        <span
+                          style={{
+                            color: "orange",
+                          }}
+                        >
+                          Task Not Completed
+                        </span>
+                      </div>
+                    ) : (
+                      <>
+                        {each.completed === "yes" &&
+                        each.secondAccepted === "no" &&
+                        each.thirdAccepted === "no" &&
+                        each.fouthAccepted === "no" ? (
+                          <div className="newly-states-coor-task-distric-confirm-card">
+                            <span>This Task Assignment Submitted </span>
+                            <span>
+                              Please Onces check and Confirm You are Accepted or
+                              Rejected
+                            </span>
+                            <div>
+                              <button
+                                onClick={() =>
+                                  onStaticFirstTaskAccepted(each._id)
+                                }
+                              >
+                                Accepted
+                              </button>
+                              <button
+                                onClick={() =>
+                                  onStaticFirstTaskRejected(each._id)
+                                }
+                              >
+                                Rejected
+                              </button>
+                            </div>
+                          </div>
+                        ) : (
+                          <>
+                            {each.completed === "yes" &&
+                            each.secondAccepted === "yes" &&
+                            each.thirdAccepted === "no" &&
+                            each.fouthAccepted === "no" ? (
+                              <div>
+                                <span>
+                                  This Task is Rejected ... Rechecking Process
+                                  start
+                                </span>
+                              </div>
+                            ) : (
+                              <>
+                                {each.completed === "yes" &&
+                                each.secondAccepted === "yes" &&
+                                each.thirdAccepted === "yes" &&
+                                each.fouthAccepted === "no" ? (
+                                  <div className="nnnn-rechecking-process-card">
+                                    <span>
+                                      Rechecking Process Completed And Submitted
+                                      New Documents
+                                    </span>
+                                    <span>
+                                      Please Confirm You are Accepted or
+                                      Rejected
+                                    </span>
+                                    <div>
+                                      <button
+                                        onClick={() =>
+                                          onRechinkAcceptedConfirm(each?._id)
+                                        }
+                                      >
+                                        Accepted
+                                      </button>
+                                      <button
+                                        onClick={() =>
+                                          onReckeckingNewlyAddedFunc(each?._id)
+                                        }
+                                      >
+                                        Rejected
+                                      </button>
+                                    </div>
+                                  </div>
+                                ) : (
+                                  <div>
+                                    <span
+                                      style={{
+                                        color: "green",
+                                      }}
+                                    >
+                                      Task Completd Successfully ....!
+                                    </span>
+                                  </div>
+                                )}
+                              </>
+                            )}
+                          </>
+                        )}
+                      </>
+                    )}
+                  </div>
                 </div>
               ))}
               <h3
@@ -282,16 +410,112 @@ const StateCoorAssignTask = () => {
               </h3>
               {secondSubTask.map((each, key) => (
                 <div className="display__each__task" key={key}>
-                  <span>{each.sub_task}</span>
-                  <span
-                    className={`${
-                      each.completed !== "no"
-                        ? "task__completed"
-                        : "task__not__completed"
-                    }`}
-                  >
-                    {each.completed !== "no" ? "Completed" : "Not Completed"}
-                  </span>
+                  <h4>{each.sub_task}</h4>
+                  <div className="newly-added-subtasks-district-coor-card">
+                    {each.completed === "no" &&
+                    each.secondAccepted === "no" &&
+                    each.thirdAccepted === "no" &&
+                    each.fouthAccepted === "no" ? (
+                      <div>
+                        <span
+                          style={{
+                            color: "orange",
+                          }}
+                        >
+                          Task Not Completed
+                        </span>
+                      </div>
+                    ) : (
+                      <>
+                        {each.completed === "yes" &&
+                        each.secondAccepted === "no" &&
+                        each.thirdAccepted === "no" &&
+                        each.fouthAccepted === "no" ? (
+                          <div className="newly-states-coor-task-distric-confirm-card">
+                            <span>This Task Assignment Submitted </span>
+                            <span>
+                              Please Onces check and Confirm You are Accepted or
+                              Rejected
+                            </span>
+                            <div>
+                              <button
+                                onClick={() =>
+                                  onStaticFirstTaskAccepted(each._id)
+                                }
+                              >
+                                Accepted
+                              </button>
+                              <button
+                                onClick={() =>
+                                  onStaticFirstTaskRejected(each._id)
+                                }
+                              >
+                                Rejected
+                              </button>
+                            </div>
+                          </div>
+                        ) : (
+                          <>
+                            {each.completed === "yes" &&
+                            each.secondAccepted === "yes" &&
+                            each.thirdAccepted === "no" &&
+                            each.fouthAccepted === "no" ? (
+                              <div>
+                                <span>
+                                  This Task is Rejected ... Rechecking Process
+                                  start
+                                </span>
+                              </div>
+                            ) : (
+                              <>
+                                {each.completed === "yes" &&
+                                each.secondAccepted === "yes" &&
+                                each.thirdAccepted === "yes" &&
+                                each.fouthAccepted === "no" ? (
+                                  <div className="nnnn-rechecking-process-card">
+                                    <span>
+                                      Rechecking Process Completed And Submitted
+                                      New Documents
+                                    </span>
+                                    <span>
+                                      Please Confirm You are Accepted or
+                                      Rejected
+                                    </span>
+                                    <div>
+                                      <button
+                                        onClick={() =>
+                                          onRechinkAcceptedConfirm(each?._id)
+                                        }
+                                      >
+                                        Accepted
+                                      </button>
+                                      <button
+                                        onClick={() =>
+                                          onReckeckingNewlyAddedFunc(each?._id)
+                                        }
+                                      >
+                                        Rejected
+                                      </button>
+                                    </div>
+                                  </div>
+                                ) : (
+                                  <div>
+                                    <span
+                                      style={{
+                                        color: "green",
+                                      }}
+                                    >
+                                      Task Completd Successfully ....!
+                                    </span>
+                                  </div>
+                                )}
+                              </>
+                            )}
+                          </>
+                        )}
+                      </>
+                    )}
+                  </div>
                 </div>
               ))}
             </div>

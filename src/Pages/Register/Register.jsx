@@ -50,6 +50,8 @@ const Register = () => {
 
         <div className="signup__image__card">
           <img src="Images/cam-signup.png" alt="" />
+          {/* <h2>Student </h2>
+          <h4>Back</h4> */}
         </div>
       </div>
     </div>

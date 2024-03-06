@@ -60,7 +60,7 @@
 }
 
 .exel-table-header > :nth-child(6) {
-  width: 250px;
+  width: 350px;
   /* border: 2px solid red; */
 }
 
@@ -116,7 +116,7 @@
 }
 
 .table__inner__body_exel > :nth-child(6) {
-  width: 250px;
+  width: 350px;
   /* border: 2px solid red; */
 }
 

@@ -35,7 +35,7 @@ const Certificate = () => {
       .catch((e) => console.log(e));
   };
 
-  // console.log(UUU);
+  console.log(UUU);
 
   return (
     <div className="certificate__main">
@@ -44,7 +44,7 @@ const Certificate = () => {
         <img className="flower__image" src="images/2-01.png" alt="" />
         <div className="certificate__logo__card">
           <img src="Images/left.png" alt="" />
-          <h3>ELECTION COMMISION OF TELANGANA</h3>
+          <h3>ELECTION COMMISION OF {UUU?.state.toUpperCase()}</h3>
           <img src="Images/logo.png" alt="" />
         </div>
         <div className="certificate__contras">
@@ -61,7 +61,7 @@ const Certificate = () => {
         <div className="certificate__text__card__container">
           <h1>For Successful Participation as Volunteer for</h1>
           <h1>
-            General Election of Telangana Legislative Assembly 2023-2024
+            General Election of {UUU?.state} Legislative Assembly 2023-2024
             Webcasting
           </h1>
         </div>

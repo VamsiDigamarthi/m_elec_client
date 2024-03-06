@@ -173,19 +173,21 @@ const Payment = () => {
                             <span>Phone Number</span>
                             <span>{districtCoordinatorDetails?.phone}</span>
                           </div>
-                          <span
+                          <h3
                             style={{
                               color: "lightslategray",
+                              textAlign: "start",
+                              marginTop: "10px",
                             }}
                           >
                             If Your Recevied Payment Please Confirm Otherwise
-                          </span>
+                          </h3>
                           <span
                             style={{
                               color: "lightslategray",
                             }}
                           >
-                            You Con't Download Your Certificate
+                            other wise You Con't Download Your Certificate
                           </span>
                           <div className="ditrict__confirm__card">
                             <button onClick={onConfirmPayment}>Confirm</button>
@@ -218,10 +220,22 @@ const Payment = () => {
                               You Are Already downloaded The Certificate
                             </span>
                           ) : (
-                            <span>
-                              Go To Certificate Page
-                              <Link to="/certificate">Click here</Link>
-                            </span>
+                            <>
+                              <h4
+                                style={{
+                                  textAlign: "center",
+                                  lineHeight: "2",
+                                }}
+                              >
+                                You Can Download Certificate Only Once If You
+                                loose the certificate We Cont't Download and We
+                                Con't Provided
+                              </h4>
+                              <span>
+                                Go To Certificate Page
+                                <Link to="/certificate">Click here</Link>
+                              </span>
+                            </>
                           )}
                         </div>
                       </div>

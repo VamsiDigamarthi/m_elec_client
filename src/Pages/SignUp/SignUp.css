@@ -73,9 +73,10 @@
   border: 1px solid rgba(168, 119, 119, 0.25);
   outline: none;
   border-radius: 5px;
-  font-size: 14px;
+  font-size: 15px;
   height: 40px;
   border-radius: 10px;
+  color: rgb(81, 81, 85);
 }
 
 .inputBox select:focus {

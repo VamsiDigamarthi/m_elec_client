@@ -27,6 +27,8 @@ import Chart from "./Pages/Chart/Chart";
 import StateCoorAssignTask from "./Pages/StateCoorAssignTask/StateCoorAssignTask";
 import NotFound from "./Pages/NotFound/NotFound";
 import DistrictCooeExel from "./Pages/DistrictCoorExel/DistrictCooeExel";
+import Manages from "./Pages/Manages/Manages";
+import OwnRegistor from "./Pages/OwnRegistor/OwnRegistor";
 function App() {
   const UUU = useSelector((state) => state.authReducer.authData);
   // console.log(UUU);
@@ -39,7 +41,7 @@ function App() {
     setTaskAssignAdminModalOpen(!taskAssignAdminModalOpen);
   };
 
-  // console.log(taskAssignAdminModalOpen);
+  console.log(UUU);
 
   return (
     <div className="App">
@@ -63,8 +65,40 @@ function App() {
                     <Home />
                   ) : UUU?.role === "2" ? (
                     <Navigate to="/admin" />
-                  ) : (
+                  ) : UUU?.role === "3" ? (
                     <Navigate to="/user" />
+                  ) : (
+                    <Navigate to="/upload" />
+                  )
+                ) : (
+                  <Navigate to="/register" />
+                )
+              }
+            />
+
+            {/* <Route
+              path="/super-admin"
+              element={
+                UUU ? (
+                  UUU?.role === "1" ? (
+                    <SuperAdmin />
+                  ) : (
+                    <NotAccess />
+                  )
+                ) : (
+                  <Navigate to="/register" />
+                )
+              }
+            /> */}
+
+            <Route
+              path="/upload"
+              element={
+                UUU ? (
+                  UUU?.role === "4" ? (
+                    <SuperAdmin />
+                  ) : (
+                    <NotAccess />
                   )
                 ) : (
                   <Navigate to="/register" />
@@ -73,11 +107,25 @@ function App() {
             />
 
             <Route
-              path="/super-admin"
+              path="/manages"
               element={
                 UUU ? (
-                  UUU?.role === "1" ? (
-                    <SuperAdmin />
+                  UUU?.role === "4" ? (
+                    <Manages />
+                  ) : (
+                    <NotAccess />
+                  )
+                ) : (
+                  <Navigate to="/register" />
+                )
+              }
+            />
+            <Route
+              path="/own/records"
+              element={
+                UUU ? (
+                  UUU?.role === "4" ? (
+                    <OwnRegistor />
                   ) : (
                     <NotAccess />
                   )

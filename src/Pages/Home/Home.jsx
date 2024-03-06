@@ -13,6 +13,7 @@ const Home = () => {
   const UUU = useSelector((state) => state.authReducer.authData);
 
   // THIS TWO STATES ARE STORING CHART VALUES AND TEXT
+  // console.log(UUU);
   const options = {
     labels: ["Assign", "Not Assign"],
     colors: ["green", "#ff6f00"],
@@ -35,9 +36,16 @@ const Home = () => {
   const [assignPsPercentage, setAssignPsPercentage] = useState(0);
   const [notAssignPsPercentage, setNotAssignPsPercentage] = useState(0);
 
+  // ALL DISTRICT NAMES STORES
+  const [disticts, setDisticts] = useState(null);
+
+  // ALL DISTRICT COORDINATOR
+
+  const [allDistrictCoor, setAllDistrictCoor] = useState([]);
+
   // INITIALLY ALL STATE CAMS DETAILS FETCHING FROM DATA BASE
   const onGetAllPsDetails = () => {
-    APIS.get("/state/all-ps-details-fetch-super-admin", {
+    APIS.get(`/state/all-ps-details-fetch-super-admin/${UUU?.state}`, {
       headers: headers,
     })
       .then((res) => {
@@ -49,8 +57,25 @@ const Home = () => {
         console.log(e?.response?.data?.msg);
       });
   };
+
+  // GET ALL DISTRICT COORDINATOR IN SPECIFIC STATE
+
+  const allDistrictCoorInSpecificField = () => {
+    APIS.get(`/state/all/district/coordinator/${UUU?.state}`, {
+      headers: headers,
+    })
+      .then((res) => {
+        // console.log(res.data);
+        setAllDistrictCoor(res.data);
+      })
+      .catch((e) => {
+        console.log(e?.response?.data?.msg);
+      });
+  };
+
   useEffect(() => {
     onGetAllPsDetails();
+    allDistrictCoorInSpecificField();
   }, []);
 
   // AFTER DATA FETCHING CALCULATED THE COUNT AND PERCENTAGE OF PS DETAILS
@@ -64,6 +89,11 @@ const Home = () => {
     let notAssignPsPerce =
       (notAssignPs.length / mainCamDataFromApp.length) * 100;
     setNotAssignPsPercentage(notAssignPsPerce);
+
+    const uniqueDistrict = [
+      ...new Set(mainCamDataFromApp.map((item) => item.District)),
+    ];
+    setDisticts(uniqueDistrict);
   }, [mainCamDataFromApp]);
 
   // AFTER CALCULATION COMPLETED UPDATED THE CHART
@@ -106,7 +136,123 @@ const Home = () => {
         .catch((e) => console.log(e));
     }
   };
-  console.log(UUU);
+
+  // console.log(mainCamDataFromApp);
+  // console.log(disticts);
+
+  //
+
+  const onCalculatedTotalCames = (district) => {
+    // console.log(district);
+    let singleDistrictPsCount = mainCamDataFromApp.filter(
+      (each) => each.District === district
+    );
+    return singleDistrictPsCount.length;
+  };
+
+  const totalUniqueLocationsDistrictWise = (district) => {
+    let singleDistrictPsCount = mainCamDataFromApp.filter(
+      (each) => each.District === district
+    );
+    const key = "Location";
+    const arrayUniqueByKey = [
+      ...new Map(
+        singleDistrictPsCount.map((item) => [item[key], item])
+      ).values(),
+    ];
+
+    return arrayUniqueByKey.length;
+  };
+
+  const assignUniqueLocations = (disticts) => {
+    let singleDistrictPsCount = mainCamDataFromApp.filter(
+      (each) => each.District === disticts
+    );
+    const key = "Location";
+    const arrayUniqueByKey = [
+      ...new Map(
+        singleDistrictPsCount.map((item) => [item[key], item])
+      ).values(),
+    ];
+    const assignTask = arrayUniqueByKey.filter(
+      (each) => each.eassign === "yes"
+    );
+
+    return assignTask.length;
+  };
+
+  const assignPsPercentageValue = (disticts) => {
+    let singleDistrictPsCount = mainCamDataFromApp.filter(
+      (each) => each.District === disticts
+    );
+    const key = "Location";
+    const arrayUniqueByKey = [
+      ...new Map(
+        singleDistrictPsCount.map((item) => [item[key], item])
+      ).values(),
+    ];
+    const assignTask = arrayUniqueByKey.filter(
+      (each) => each.eassign === "yes"
+    );
+    let per = (assignTask.length / arrayUniqueByKey.length) * 100;
+    return per;
+  };
+
+  const notAssignUniqueLocations = (disticts) => {
+    let singleDistrictPsCount = mainCamDataFromApp.filter(
+      (each) => each.District === disticts
+    );
+    const key = "Location";
+    const arrayUniqueByKey = [
+      ...new Map(
+        singleDistrictPsCount.map((item) => [item[key], item])
+      ).values(),
+    ];
+    const assignTask = arrayUniqueByKey.filter(
+      (each) => each.eassign === "yes"
+    );
+
+    return arrayUniqueByKey.length - assignTask.length;
+  };
+
+  const notAssignPsPercentageValue = (disticts) => {
+    let singleDistrictPsCount = mainCamDataFromApp.filter(
+      (each) => each.District === disticts
+    );
+    const key = "Location";
+    const arrayUniqueByKey = [
+      ...new Map(
+        singleDistrictPsCount.map((item) => [item[key], item])
+      ).values(),
+    ];
+    const assignTask = arrayUniqueByKey.filter(
+      (each) => each.eassign !== "yes"
+    );
+
+    let per = (assignTask.length / arrayUniqueByKey.length) * 100;
+
+    return per;
+  };
+
+  // console.log(allDistrictCoor);
+
+  const districtCoorName = (name) => {
+    // console.log("xcvbnm,.");
+    const districtCorr = allDistrictCoor?.filter(
+      (each) => each.district === name
+    );
+    // console.log(districtCorr);
+    return districtCorr[0]?.name;
+  };
+
+  const districtCoorPhone = (name) => {
+    const districtCorr = allDistrictCoor?.filter(
+      (each) => each.district === name
+    );
+    // console.log(districtCorr);
+    return districtCorr[0]?.phone;
+  };
+
   return (
     <div className="super__admin__main">
       <span className="all__pages__over__view new__over__view">Over View</span>
@@ -124,7 +270,7 @@ const Home = () => {
                   color: "#ff6f00",
                 }}
               >
-                {UUU[0]?.name}
+                {UUU?.name}
               </span>
             </h2>
             <span>In this report you will find yor cams updated</span>
@@ -247,22 +393,166 @@ const Home = () => {
         </div>
         {/* coresponding district coordinator */}
 
-        {correspondingDistrictCoordinator !== null ? (
-          <div className="coresponding__district__main">
-            <div className="district__cor__name__card">
-              <span>District Coordinator</span>
-              <span>{correspondingDistrictCoordinator?.name}</span>
+        {/* */}
+        {/*  */}
+        {disticts?.map((each, key) => (
+          <div key={key} className="coresponding__district__main">
+            <h3>{each}</h3>
+            {/* <spv>{onFilterMutlipleDistrict(each)}</spv> */}
+            <div className="each-district-values-singless">
+              <div className="all__cam__card">
+                <div className="super_admin_car_number_carddd">
+                  <div>
+                    <div
+                      className="icond__back__change"
+                      style={{
+                        background: "rgb(132, 232, 245)",
+                      }}
+                    >
+                      <FaCameraRetro />
+                    </div>
+                    <BsThreeDots size={22} />
+                  </div>
+                  <div
+                    style={{
+                      fontFamily: "Courier New, Courier, monospace",
+                    }}
+                  >
+                    <h3 style={{ marginLeft: "0px", marginBottom: "10px" }}>
+                      {/* {secondMainFromMainCam.length} */}
+                      Total Cams
+                    </h3>
+                    <span>{onCalculatedTotalCames(each)}</span>
+                  </div>
+                  <div
+                    className="cam_percentage_card"
+                    style={{
+                      color: "rgb(132, 232, 245)",
+                    }}
+                  >
+                    <MdArrowCircleUp size={20} />
+                    <span>100%</span>
+                  </div>
+                </div>
+                {/* second */}
+                <div className="super_admin_car_number_carddd">
+                  <div>
+                    <div
+                      className="icond__back__change"
+                      style={{
+                        background: "green",
+                      }}
+                    >
+                      <FaCameraRetro />
+                    </div>
+                    <BsThreeDots size={22} />
+                  </div>
+                  <div
+                    style={{
+                      fontFamily: "Courier New, Courier, monospace",
+                    }}
+                  >
+                    <h3 style={{ marginLeft: "0px", marginBottom: "10px" }}>
+                      {/* {onLineStatusNumberState.length} */} Total Locations
+                    </h3>
+                    <span>{totalUniqueLocationsDistrictWise(each)}</span>
+                  </div>
+                  <div
+                    className="cam_percentage_card"
+                    style={{
+                      color: "green",
+                    }}
+                  >
+                    <MdArrowCircleUp size={20} />
+                    {/* {onLineStatusPercentageState.toFixed()} */}
+                    <span>100 %</span>
+                  </div>
+                </div>
+                {/* third */}
+                <div className="super_admin_car_number_carddd">
+                  <div>
+                    <div
+                      className="icond__back__change"
+                      style={{
+                        background: "#ff6f00",
+                      }}
+                    >
+                      <FaCameraRetro />
+                    </div>
+                    <BsThreeDots size={22} />
+                  </div>
+                  <div
+                    style={{
+                      fontFamily: "Courier New, Courier, monospace",
+                    }}
+                  >
+                    <h3 style={{ marginLeft: "0px", marginBottom: "10px" }}>
+                      {/* {offLineStatusNumberState} */} Assign Locations
+                    </h3>
+                    <span>{assignUniqueLocations(each)}</span>
+                  </div>
+                  <div
+                    className="cam_percentage_card"
+                    style={{
+                      color: "#ff6f00",
+                    }}
+                  >
+                    <MdArrowCircleUp size={20} />
+                    {/* {offLineStatusPercentageState.toFixed()} */}
+                    <span>{assignPsPercentageValue(each)?.toFixed(1)}%</span>
+                  </div>
+                </div>
+                {/* fouths */}
+                <div className="super_admin_car_number_carddd">
+                  <div>
+                    <div
+                      className="icond__back__change"
+                      style={{
+                        background: "green",
+                      }}
+                    >
+                      <FaCameraRetro />
+                    </div>
+                    <BsThreeDots size={22} />
+                  </div>
+                  <div
+                    style={{
+                      fontFamily: "Courier New, Courier, monospace",
+                    }}
+                  >
+                    <h3 style={{ marginLeft: "0px", marginBottom: "10px" }}>
+                      {/* {onLineStatusNumberState.length} */}Not Assign
+                      Locations
+                    </h3>
+                    <span>{notAssignUniqueLocations(each)}</span>
+                  </div>
+                  <div
+                    className="cam_percentage_card"
+                    style={{
+                      color: "green",
+                    }}
+                  >
+                    <MdArrowCircleUp size={20} />
+                    {/* {onLineStatusPercentageState.toFixed()} */}
+                    <span>{notAssignPsPercentageValue(each)?.toFixed(1)}%</span>
+                  </div>
+                </div>
+                {/* third end */}
+              </div>
             </div>
-            <div className="district__cor__name__card">
-              <span>Mobile Number</span>
-              <span>{correspondingDistrictCoordinator?.phone}</span>
+
+            <div className="coresponding__district__main">
+              <div className="district__cor__name__card">
+                <span>District Coordinator</span>
+                <span>{districtCoorName(each)}</span>
+              </div>
+              <div className="district__cor__name__card">
+                <span>Mobile Number</span>
+                <span>{districtCoorPhone(each)}</span>
+              </div>
             </div>
           </div>
-        ) : (
-          <div className="coresponding__district__main">
-            <h3>No District Coordinator</h3>
-          </div>
-        )}
+        ))}
       </div>
     </div>
   );
